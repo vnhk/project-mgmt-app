@@ -1,0 +1,6 @@
+/package-lock.json
+/target/
+/node_modules/
+/src/main/frontend/generated
+/src/main/bundles/dev.bundle
+/src/main/bundles/README.md
