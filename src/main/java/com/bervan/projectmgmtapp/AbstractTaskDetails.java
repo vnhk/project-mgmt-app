@@ -1,16 +1,18 @@
 package com.bervan.projectmgmtapp;
 
-import com.vaadin.flow.component.button.Button;
+import com.bervan.common.AbstractPageView;
+import com.bervan.common.BervanButton;
+import com.bervan.common.WysiwygTextArea;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.H4;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.TextField;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractTaskDetails extends VerticalLayout {
+public abstract class AbstractTaskDetails extends AbstractPageView {
     public static final String ROUTE_NAME = "/project-management/task-details";
 
     public AbstractTaskDetails() {
@@ -31,8 +33,15 @@ public abstract class AbstractTaskDetails extends VerticalLayout {
         header.setJustifyContentMode(JustifyContentMode.BETWEEN);
 
         // Description Section
-        Paragraph description = new Paragraph(story.getDescription());
-        description.getElement().getStyle().set("padding", "10px").set("border", "1px solid #ddd").set("border-radius", "5px");
+        BervanButton saveDescriptionButton = new BervanButton("Save", false);
+        WysiwygTextArea description = new WysiwygTextArea("editor_task_details_" + story.id, story.getDescription(), true);
+        description.setSwitchButtonPostAction(() -> {
+            saveDescriptionButton.setVisible(!description.isViewMode());
+        });
+
+        saveDescriptionButton.addClickListener(e -> {
+            showWarningNotification("Saving is not implement yet!");
+        });
 
         // Subtasks Section
         H4 subtasksHeader = new H4("Subtasks");
@@ -40,32 +49,8 @@ public abstract class AbstractTaskDetails extends VerticalLayout {
         subtasksGrid.setItems(story.getSubtasks());
         subtasksGrid.setWidthFull();
 
-        // Comments Section
-        H4 commentsHeader = new H4("Comments");
-        VerticalLayout commentsSection = new VerticalLayout();
-        for (Comment comment : story.getComments()) {
-            Div commentBox = new Div();
-            commentBox.getElement().getStyle().set("padding", "10px").set("border", "1px solid #ddd").set("border-radius", "5px").set("margin-bottom", "5px");
-            commentBox.add(new Span(comment.getAuthor() + ": " + comment.getText()));
-            commentsSection.add(commentBox);
-        }
-
-        // Add Comment Section
-        TextField commentField = new TextField();
-        commentField.setPlaceholder("Add a comment");
-        Button addCommentButton = new Button("Submit", event -> {
-            if (!commentField.getValue().trim().isEmpty()) {
-                story.addComment("You", commentField.getValue());
-                Div commentBox = new Div(new Span("You: " + commentField.getValue()));
-                commentBox.getElement().getStyle().set("padding", "10px").set("border", "1px solid #ddd").set("border-radius", "5px").set("margin-bottom", "5px");
-                commentsSection.add(commentBox);
-                commentField.clear();
-            }
-        });
-        HorizontalLayout commentInputLayout = new HorizontalLayout(commentField, addCommentButton);
-
         // Layout
-        add(header, description, subtasksHeader, subtasksGrid, commentsHeader, commentsSection, commentInputLayout);
+        add(header, description, saveDescriptionButton, subtasksHeader, subtasksGrid);
     }
 
     private static class Story {
