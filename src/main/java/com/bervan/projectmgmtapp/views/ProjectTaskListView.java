@@ -39,6 +39,21 @@ public class ProjectTaskListView extends AbstractTableView<UUID, Task> {
     }
 
     @Override
+    protected void buildFiltersMenu() {
+        super.buildFiltersMenu();
+
+        //default - only open tasks
+        filtersMap.keySet().stream().filter(e -> e.getName().equals("status"))
+                .forEach(e -> {
+                    filtersMap.get(e)
+                            .get("Canceled").setValue(false);
+                    filtersMap.get(e)
+                            .get("Done").setValue(false);
+                });
+
+    }
+
+    @Override
     protected void customizePreLoad(SearchRequest request) {
         request.addCriterion("PROJECT_TASK_CRITERIA", Task.class,
                 "project.id", SearchOperation.EQUALS_OPERATION, project.getId());
