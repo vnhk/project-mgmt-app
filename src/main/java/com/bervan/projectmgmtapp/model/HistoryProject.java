@@ -3,13 +3,12 @@ package com.bervan.projectmgmtapp.model;
 import com.bervan.common.model.BervanHistoryEntity;
 import com.bervan.common.model.PersistableTableData;
 import com.bervan.history.model.HistoryField;
+import com.bervan.history.model.HistoryOwnerEntity;
 import com.bervan.history.model.HistorySupported;
 import com.bervan.ieentities.ExcelIEEntity;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -21,19 +20,15 @@ public class HistoryProject extends BervanHistoryEntity<UUID> implements Persist
     private UUID id;
     private LocalDateTime updateDate;
 
-    @Size(min = 4, max = 200)
     @HistoryField
     private String name;
 
-    @Size(min = 4, max = 20)
     @HistoryField
     private String number;
 
-    @Size(min = 4, max = 20)
     @HistoryField
     private String status;
 
-    @Size(min = 4, max = 15)
     @HistoryField
     private String priority;
 
@@ -42,6 +37,10 @@ public class HistoryProject extends BervanHistoryEntity<UUID> implements Persist
     @Column(columnDefinition = "MEDIUMTEXT")
     @HistoryField
     private String description;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @HistoryOwnerEntity
+    private Project historyOwner;
 
     public String getName() {
         return name;
@@ -106,5 +105,13 @@ public class HistoryProject extends BervanHistoryEntity<UUID> implements Persist
     @Override
     public void setId(UUID uuid) {
         this.id = uuid;
+    }
+
+    public Project getHistoryOwner() {
+        return historyOwner;
+    }
+
+    public void setHistoryOwner(Project historyOwner) {
+        this.historyOwner = historyOwner;
     }
 }

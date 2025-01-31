@@ -3,13 +3,12 @@ package com.bervan.projectmgmtapp.model;
 import com.bervan.common.model.BervanHistoryEntity;
 import com.bervan.common.model.PersistableTableData;
 import com.bervan.history.model.HistoryField;
+import com.bervan.history.model.HistoryOwnerEntity;
 import com.bervan.history.model.HistorySupported;
 import com.bervan.ieentities.ExcelIEEntity;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -21,23 +20,18 @@ public class HistoryTask extends BervanHistoryEntity<UUID> implements Persistabl
     private UUID id;
     private LocalDateTime updateDate;
 
-    @Size(min = 4, max = 200)
     @HistoryField
     private String name;
 
-    @Size(min = 4, max = 20)
     @HistoryField
     private String number;
 
-    @Size(min = 4, max = 20)
     @HistoryField
     private String status;
 
-    @Size(min = 4, max = 15)
     @HistoryField
     private String type;
 
-    @Size(min = 4, max = 15)
     @HistoryField
     private String priority;
 
@@ -47,9 +41,12 @@ public class HistoryTask extends BervanHistoryEntity<UUID> implements Persistabl
     @HistoryField
     private String description;
 
-    @NotNull
     @HistoryField
     private LocalDateTime dueDate;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @HistoryOwnerEntity
+    private Task historyOwner;
 
     public String getName() {
         return name;
@@ -130,5 +127,13 @@ public class HistoryTask extends BervanHistoryEntity<UUID> implements Persistabl
     @Override
     public void setId(UUID uuid) {
         this.id = uuid;
+    }
+
+    public Task getHistoryOwner() {
+        return historyOwner;
+    }
+
+    public void setHistoryOwner(Task historyOwner) {
+        this.historyOwner = historyOwner;
     }
 }
