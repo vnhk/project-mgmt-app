@@ -6,13 +6,10 @@ import com.bervan.common.model.VaadinTableColumn;
 import com.bervan.history.model.HistoryCollection;
 import com.bervan.history.model.HistorySupported;
 import com.bervan.ieentities.ExcelIEEntity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import org.checkerframework.common.aliasing.qual.Unique;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -25,6 +22,7 @@ import java.util.UUID;
 public class Task extends BervanBaseEntity<UUID> implements PersistableTableData<UUID>, ExcelIEEntity<UUID> {
     public static final String Task_status_columnName = "status";
     public static final String Task_type_columnName = "type";
+    public static final String Task_name_columnName = "name";
     public static final String Task_description_columnName = "description";
     public static final String Task_priority_columnName = "priority";
     public static final String Task_dueDate_columnName = "dueDate";
@@ -32,21 +30,21 @@ public class Task extends BervanBaseEntity<UUID> implements PersistableTableData
     @Id
     private UUID id;
     @Size(min = 4, max = 200)
+    @VaadinTableColumn(displayName = "Name", internalName = Task_name_columnName)
     private String name;
-    @Unique
-    @Size(min = 4, max = 20)
+    @Size(min = 4, max = 30)
     private String number;
     private boolean deleted;
 
-    @VaadinTableColumn(displayName = "Status", internalName = Task_status_columnName, strValues = {"Open", "In Progress", "Done", "Canceled"})
+    @VaadinTableColumn(displayName = "Status", internalName = Task_status_columnName, strValues = {"Open", "In Progress", "Done", "Canceled"}, defaultValue = "Open")
     @Size(min = 4, max = 20)
     private String status;
 
-    @VaadinTableColumn(displayName = "Type", internalName = Task_type_columnName, strValues = {"Task", "Story", "Objective", "Feature"})
+    @VaadinTableColumn(displayName = "Type", internalName = Task_type_columnName, strValues = {"Task", "Story", "Objective", "Feature"}, defaultValue = "Task")
     @Size(min = 4, max = 15)
     private String type;
 
-    @VaadinTableColumn(displayName = "Type", internalName = Task_priority_columnName, strValues = {"Low", "Medium", "High", "Critical"})
+    @VaadinTableColumn(displayName = "Priority", internalName = Task_priority_columnName, strValues = {"Low", "Medium", "High", "Critical"}, defaultValue = "Medium")
     @Size(min = 4, max = 15)
     private String priority;
 
@@ -56,18 +54,19 @@ public class Task extends BervanBaseEntity<UUID> implements PersistableTableData
     @VaadinTableColumn(displayName = "Description", internalName = Task_description_columnName, isWysiwyg = true)
     private String description;
 
-    @NotNull
     @VaadinTableColumn(displayName = "Due Date", internalName = Task_dueDate_columnName)
-    private LocalDate dueDate;
+    private LocalDateTime dueDate;
 
     private LocalDateTime modificationDate;
 
+    @ManyToOne
+    @NotNull
+    private Project project;
+
     @OneToMany(mappedBy = "child", fetch = FetchType.EAGER)
-    @JsonIgnore
     private Set<TaskRelation> childRelationships = new HashSet<>();
 
     @OneToMany(mappedBy = "parent", fetch = FetchType.EAGER)
-    @JsonIgnore
     private Set<TaskRelation> parentRelationships = new HashSet<>();
 
     @OneToMany(fetch = FetchType.EAGER)
@@ -148,7 +147,7 @@ public class Task extends BervanBaseEntity<UUID> implements PersistableTableData
         return deleted;
     }
 
-    public void setDeleted(boolean deleted) {
+    public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
     }
 
@@ -168,11 +167,11 @@ public class Task extends BervanBaseEntity<UUID> implements PersistableTableData
         this.priority = priority;
     }
 
-    public LocalDate getDueDate() {
+    public LocalDateTime getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(LocalDate dueDate) {
+    public void setDueDate(LocalDateTime dueDate) {
         this.dueDate = dueDate;
     }
 
@@ -194,5 +193,13 @@ public class Task extends BervanBaseEntity<UUID> implements PersistableTableData
 
     public Set<HistoryTask> getHistory() {
         return history;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
     }
 }

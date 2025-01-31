@@ -7,4 +7,5 @@ import java.util.UUID;
 
 public interface TaskRepository extends BaseRepository<Task, UUID> {
 
+    boolean existsByNumber(String number);
 }

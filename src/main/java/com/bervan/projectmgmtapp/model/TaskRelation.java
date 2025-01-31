@@ -56,7 +56,7 @@ public class TaskRelation extends BervanBaseEntity<UUID> implements ExcelIEEntit
         return deleted;
     }
 
-    public void setDeleted(boolean deleted) {
+    public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
     }
 

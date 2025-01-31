@@ -16,7 +16,7 @@ import java.util.UUID;
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @HistorySupported
-public class HistoryTask extends BervanHistoryEntity<UUID> implements PersistableTableData<UUID>, ExcelIEEntity<UUID> {
+public class HistoryProject extends BervanHistoryEntity<UUID> implements PersistableTableData<UUID>, ExcelIEEntity<UUID> {
     @Id
     private UUID id;
     private LocalDateTime updateDate;
@@ -35,10 +35,6 @@ public class HistoryTask extends BervanHistoryEntity<UUID> implements Persistabl
 
     @Size(min = 4, max = 15)
     @HistoryField
-    private String type;
-
-    @Size(min = 4, max = 15)
-    @HistoryField
     private String priority;
 
     @Lob
@@ -46,10 +42,6 @@ public class HistoryTask extends BervanHistoryEntity<UUID> implements Persistabl
     @Column(columnDefinition = "MEDIUMTEXT")
     @HistoryField
     private String description;
-
-    @NotNull
-    @HistoryField
-    private LocalDateTime dueDate;
 
     public String getName() {
         return name;
@@ -75,14 +67,6 @@ public class HistoryTask extends BervanHistoryEntity<UUID> implements Persistabl
         this.status = status;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public String getPriority() {
         return priority;
     }
@@ -97,14 +81,6 @@ public class HistoryTask extends BervanHistoryEntity<UUID> implements Persistabl
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public LocalDateTime getDueDate() {
-        return dueDate;
-    }
-
-    public void setDueDate(LocalDateTime dueDate) {
-        this.dueDate = dueDate;
     }
 
     @Override
