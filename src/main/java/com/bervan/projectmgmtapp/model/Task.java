@@ -40,7 +40,7 @@ public class Task extends BervanBaseEntity<UUID> implements PersistableTableData
     @Size(min = 4, max = 20)
     private String status;
 
-    @VaadinTableColumn(displayName = "Type", internalName = Task_type_columnName, strValues = {"Task", "Story", "Objective", "Feature"}, defaultValue = "Task")
+    @VaadinTableColumn(displayName = "Type", internalName = Task_type_columnName, strValues = {"Task", "Bug", "Story", "Objective", "Feature"}, defaultValue = "Task")
     @Size(min = 4, max = 15)
     private String type;
 
