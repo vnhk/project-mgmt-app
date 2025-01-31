@@ -23,6 +23,7 @@ public class Task extends BervanBaseEntity<UUID> implements PersistableTableData
     public static final String Task_status_columnName = "status";
     public static final String Task_type_columnName = "type";
     public static final String Task_name_columnName = "name";
+    public static final String Task_number_columnName = "number";
     public static final String Task_description_columnName = "description";
     public static final String Task_priority_columnName = "priority";
     public static final String Task_dueDate_columnName = "dueDate";
@@ -33,6 +34,7 @@ public class Task extends BervanBaseEntity<UUID> implements PersistableTableData
     @VaadinTableColumn(displayName = "Name", internalName = Task_name_columnName)
     private String name;
     @Size(min = 4, max = 30)
+    @VaadinTableColumn(displayName = "Number", internalName = Task_number_columnName, inSaveForm = false, inEditForm = false)
     private String number;
     private boolean deleted;
 
