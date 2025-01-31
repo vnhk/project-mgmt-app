@@ -45,7 +45,7 @@ public abstract class AbstractProjectDetailsView extends AbstractPageView implem
             add(projectsPageLayout);
 
             // Header Section
-            H2 title = new H2(project.get().getName());
+            H2 title = new H2(project.get().getName() + "-" + project.get().getNumber());
             Span status = new Span(project.get().getStatus());
             status.getElement().getStyle().set("background", "black")
                     .set("padding", "5px 10px")

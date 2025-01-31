@@ -43,7 +43,7 @@ public abstract class AbstractTaskDetailsView extends AbstractPageView implement
             showErrorNotification("Task does not exist!");
         } else {  // Header Section
             Task task = taskOptional.get();
-            H2 title = new H2(task.getName());
+            H2 title = new H2(task.getName() + " - " + task.getNumber());
             Span status = new Span(task.getStatus());
             status.getElement().getStyle().set("background", "black")
                     .set("padding", "5px 10px")
