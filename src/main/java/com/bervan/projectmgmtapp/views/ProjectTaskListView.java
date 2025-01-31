@@ -1,6 +1,8 @@
 package com.bervan.projectmgmtapp.views;
 
 import com.bervan.common.AbstractTableView;
+import com.bervan.common.search.SearchRequest;
+import com.bervan.common.search.model.SearchOperation;
 import com.bervan.common.service.BaseService;
 import com.bervan.core.model.BervanLogger;
 import com.bervan.projectmgmtapp.model.Project;
@@ -34,6 +36,13 @@ public class ProjectTaskListView extends AbstractTableView<UUID, Task> {
         buildGridAutomatically(grid);
 
         return grid;
+    }
+
+    @Override
+    protected void customizePreLoad(SearchRequest request) {
+        request.addCriterion("PROJECT_TASK_CRITERIA", Task.class,
+                "project.id", SearchOperation.EQUALS_OPERATION, project.getId());
+        super.customizePreLoad(request);
     }
 
     @Override

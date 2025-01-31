@@ -41,8 +41,8 @@ public class Project extends BervanBaseEntity<UUID> implements PersistableTableD
     @Size(min = 4, max = 20)
     private String status;
 
-    @VaadinTableColumn(displayName = "Priority", internalName = Project_priority_columnName, strValues = {"Low", "Medium", "High", "Critical"})
-    @Size(min = 4, max = 15)
+    @VaadinTableColumn(displayName = "Priority", internalName = Project_priority_columnName, strValues = {"Low", "Medium", "High", "Critical"}, defaultValue = "Medium")
+    @Size(min = 3, max = 15)
     private String priority;
 
     @Lob
