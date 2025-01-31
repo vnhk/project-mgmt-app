@@ -41,7 +41,7 @@ public abstract class AbstractProjectDetailsView extends AbstractPageView implem
         if (project.isEmpty()) {
             showErrorNotification("Project does not exist!");
         } else {
-            ProjectsPageLayout projectsPageLayout = new ProjectsPageLayout(true, project.get().getNumber(), project.get().getId().toString());
+            ProjectsPageLayout projectsPageLayout = new ProjectsPageLayout("");
             add(projectsPageLayout);
 
             // Header Section
