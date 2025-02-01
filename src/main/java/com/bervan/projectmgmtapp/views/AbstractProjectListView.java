@@ -16,7 +16,7 @@ public abstract class AbstractProjectListView extends AbstractTableView<UUID, Pr
     public static final String ROUTE_NAME = "/project-management/projects";
 
     public AbstractProjectListView(BaseService<UUID, Project> service, BervanLogger log) {
-        super(new ProjectsPageLayout(ROUTE_NAME), service, log, Project.class);
+        super(new ProjectsPageLayout(ROUTE_NAME, AbstractProjectDetailsView.ROUTE_NAME, AbstractTaskDetailsView.ROUTE_NAME), service, log, Project.class);
         renderCommonComponents();
     }
 

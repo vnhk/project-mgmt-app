@@ -16,7 +16,9 @@ public class AbstractAllTasksListView extends AbstractTableView<UUID, Task> {
     public static final String ROUTE_NAME = "/project-management/all-tasks";
 
     public AbstractAllTasksListView(BaseService<UUID, Task> service, BervanLogger log) {
-        super(new ProjectsPageLayout(ROUTE_NAME), service, log, Task.class);
+        super(new ProjectsPageLayout(ROUTE_NAME, AbstractTaskDetailsView.ROUTE_NAME,
+                AbstractProjectDetailsView.ROUTE_NAME
+        ), service, log, Task.class);
         renderCommonComponents();
 
         addButton.setVisible(false);

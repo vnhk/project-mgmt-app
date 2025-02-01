@@ -24,10 +24,12 @@ public abstract class AbstractTaskDetailsView extends AbstractPageView implement
     public static final String ROUTE_NAME = "/project-management/task-details/";
     private final TaskService taskService;
     private final BervanLogger logger;
+    private ProjectsPageLayout projectsPageLayout = new ProjectsPageLayout(ROUTE_NAME);
 
     public AbstractTaskDetailsView(TaskService taskService, BervanLogger logger) {
         this.taskService = taskService;
         this.logger = logger;
+        add(projectsPageLayout);
     }
 
     @Override
@@ -72,6 +74,12 @@ public abstract class AbstractTaskDetailsView extends AbstractPageView implement
 
             // Layout
             add(header, description, saveDescriptionButton, subtasksHeader, subtasksGrid);
+
+            UUID projectId = task.getProject().getId();
+            String projectNumber = task.getProject().getNumber();
+            projectsPageLayout.updateButtonText(ROUTE_NAME, task.getType() + ": " + task.getNumber());
+            projectsPageLayout.updateButtonText(AbstractProjectDetailsView.ROUTE_NAME, "Project: " + projectNumber);
+            projectsPageLayout.updateNavigateToForButton(AbstractProjectDetailsView.ROUTE_NAME, AbstractProjectDetailsView.ROUTE_NAME + projectId);
         }
     }
 }

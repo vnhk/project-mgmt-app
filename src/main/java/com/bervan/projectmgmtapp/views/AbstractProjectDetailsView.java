@@ -22,11 +22,15 @@ public abstract class AbstractProjectDetailsView extends AbstractPageView implem
     private final ProjectService projectService;
     private final TaskService taskService;
     private final BervanLogger logger;
+    private final ProjectsPageLayout projectsPageLayout;
 
     public AbstractProjectDetailsView(ProjectService projectService, TaskService taskService, BervanLogger logger) {
         this.projectService = projectService;
         this.logger = logger;
         this.taskService = taskService;
+
+        projectsPageLayout = new ProjectsPageLayout(ROUTE_NAME, AbstractTaskDetailsView.ROUTE_NAME);
+        add(projectsPageLayout);
     }
 
     @Override
@@ -41,11 +45,10 @@ public abstract class AbstractProjectDetailsView extends AbstractPageView implem
         if (project.isEmpty()) {
             showErrorNotification("Project does not exist!");
         } else {
-            ProjectsPageLayout projectsPageLayout = new ProjectsPageLayout("");
-            add(projectsPageLayout);
+            projectsPageLayout.updateButtonText(ROUTE_NAME, "Project: " + project.get().getNumber());
 
             // Header Section
-            H2 title = new H2(project.get().getName() + "-" + project.get().getNumber());
+            H2 title = new H2(project.get().getName() + " - " + project.get().getNumber());
             Span status = new Span(project.get().getStatus());
             status.getElement().getStyle().set("background", "black")
                     .set("padding", "5px 10px")
