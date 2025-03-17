@@ -62,7 +62,9 @@ public abstract class AbstractTaskDetailsView extends AbstractPageView implement
             });
 
             saveDescriptionButton.addClickListener(e -> {
-                showWarningNotification("Saving is not implement yet!");
+                Task data = taskOptional.get();
+                data.setDescription(description.getValue());
+                taskService.save(data);
             });
 
             // Subtasks Section
