@@ -33,7 +33,7 @@ public class Project extends BervanBaseEntity<UUID> implements PersistableTableD
     private String name;
     @Unique
     @Size(min = 2, max = 20)
-    @VaadinTableColumn(displayName = "Number", internalName = Project_number_columnName)
+    @VaadinTableColumn(displayName = "Number", internalName = Project_number_columnName, inEditForm = false)
     private String number;
     private boolean deleted;
 
