@@ -35,6 +35,7 @@ public abstract class AbstractProjectListView extends AbstractTableView<UUID, Pr
                     linkIcon.getStyle().set("cursor", "pointer");
                     return new Anchor(ROUTE_NAME + "/" + entity.getId(), new HorizontalLayout(linkIcon));
                 }).setKey("link")
-                .setResizable(true);
+                .setWidth("10px")
+                .setResizable(false);
     }
 }
