@@ -23,14 +23,18 @@ public abstract class AbstractProjectListView extends AbstractTableView<UUID, Pr
     @Override
     protected Grid<Project> getGrid() {
         Grid<Project> grid = new Grid<>(Project.class, false);
+        buildGridAutomatically(grid);
+
+        return grid;
+    }
+
+    @Override
+    protected void preColumnAutoCreation(Grid<Project> grid) {
         grid.addComponentColumn(entity -> {
                     Icon linkIcon = new Icon(VaadinIcon.LINK);
                     linkIcon.getStyle().set("cursor", "pointer");
                     return new Anchor(ROUTE_NAME + "/" + entity.getId(), new HorizontalLayout(linkIcon));
                 }).setKey("link")
                 .setResizable(true);
-        buildGridAutomatically(grid);
-
-        return grid;
     }
 }

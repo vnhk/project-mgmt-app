@@ -27,15 +27,19 @@ public class AbstractAllTasksListView extends AbstractTableView<UUID, Task> {
     @Override
     protected Grid<Task> getGrid() {
         Grid<Task> grid = new Grid<>(Task.class, false);
+        buildGridAutomatically(grid);
+
+        return grid;
+    }
+
+    @Override
+    protected void preColumnAutoCreation(Grid<Task> grid) {
         grid.addComponentColumn(entity -> {
                     Icon linkIcon = new Icon(VaadinIcon.LINK);
                     linkIcon.getStyle().set("cursor", "pointer");
                     return new Anchor(AbstractTaskDetailsView.ROUTE_NAME + entity.getId(), new HorizontalLayout(linkIcon));
                 }).setKey("link")
                 .setResizable(true);
-        buildGridAutomatically(grid);
-
-        return grid;
     }
 
     @Override
