@@ -48,11 +48,11 @@ public class AbstractAllTasksListView extends AbstractTableView<UUID, Task> {
         super.buildFiltersMenu();
 
         //default - only open tasks
-        filtersMap.keySet().stream().filter(e -> e.getName().equals("status"))
+        checkboxFiltersMap.keySet().stream().filter(e -> e.getName().equals("status"))
                 .forEach(e -> {
-                    filtersMap.get(e)
+                    checkboxFiltersMap.get(e)
                             .get("Canceled").setValue(false);
-                    filtersMap.get(e)
+                    checkboxFiltersMap.get(e)
                             .get("Done").setValue(false);
                 });
 
