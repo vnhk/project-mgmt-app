@@ -7,12 +7,15 @@ import com.bervan.common.service.BaseService;
 import com.bervan.core.model.BervanLogger;
 import com.bervan.projectmgmtapp.model.Project;
 import com.bervan.projectmgmtapp.model.Task;
+import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 
+import java.lang.reflect.Field;
+import java.util.Map;
 import java.util.UUID;
 
 public class ProjectTaskListView extends AbstractTableView<UUID, Task> {
@@ -21,6 +24,7 @@ public class ProjectTaskListView extends AbstractTableView<UUID, Task> {
     public ProjectTaskListView(BaseService<UUID, Task> service, BervanLogger log, ProjectsPageLayout pageLayout, Project project) {
         super(pageLayout, service, log, Task.class);
         this.project = project;
+        updateFilterMenu(filtersLayout.getCheckboxFiltersMap());
         renderCommonComponents();
     }
 
@@ -43,10 +47,7 @@ public class ProjectTaskListView extends AbstractTableView<UUID, Task> {
                 .setResizable(false);
     }
 
-    @Override
-    protected void buildFiltersMenu() {
-        super.buildFiltersMenu();
-
+    protected void updateFilterMenu(Map<Field, Map<Object, Checkbox>> checkboxFiltersMap) {
         //default - only open tasks
         checkboxFiltersMap.keySet().stream().filter(e -> e.getName().equals("status"))
                 .forEach(e -> {
