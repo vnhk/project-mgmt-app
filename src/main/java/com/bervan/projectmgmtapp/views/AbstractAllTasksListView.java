@@ -12,6 +12,7 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 
 import java.lang.reflect.Field;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -46,6 +47,13 @@ public class AbstractAllTasksListView extends AbstractTableView<UUID, Task> {
                 }).setKey("link")
                 .setWidth("10px")
                 .setResizable(false);
+    }
+
+    @Override
+    protected List<String> getFieldsToFetchForTable() {
+        List<String> columnsToFetchForTable = super.getFieldsToFetchForTable();
+        columnsToFetchForTable.add("project");
+        return columnsToFetchForTable;
     }
 
     protected void updateFilterMenu(Map<Field, Map<Object, Checkbox>> checkboxFiltersMap) {
