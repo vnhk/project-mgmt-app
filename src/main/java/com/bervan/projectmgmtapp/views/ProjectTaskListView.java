@@ -1,6 +1,6 @@
 package com.bervan.projectmgmtapp.views;
 
-import com.bervan.common.AbstractTableView;
+import com.bervan.common.AbstractBervanTableView;
 import com.bervan.common.search.SearchRequest;
 import com.bervan.common.search.model.SearchOperation;
 import com.bervan.common.service.BaseService;
@@ -18,7 +18,7 @@ import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.UUID;
 
-public class ProjectTaskListView extends AbstractTableView<UUID, Task> {
+public class ProjectTaskListView extends AbstractBervanTableView<UUID, Task> {
     private final Project project;
 
     public ProjectTaskListView(BaseService<UUID, Task> service, BervanLogger log, ProjectsPageLayout pageLayout, Project project) {

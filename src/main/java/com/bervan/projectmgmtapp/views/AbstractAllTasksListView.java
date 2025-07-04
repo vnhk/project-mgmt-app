@@ -1,6 +1,6 @@
 package com.bervan.projectmgmtapp.views;
 
-import com.bervan.common.AbstractTableView;
+import com.bervan.common.AbstractBervanTableView;
 import com.bervan.common.service.BaseService;
 import com.bervan.core.model.BervanLogger;
 import com.bervan.projectmgmtapp.model.Task;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class AbstractAllTasksListView extends AbstractTableView<UUID, Task> {
+public class AbstractAllTasksListView extends AbstractBervanTableView<UUID, Task> {
     public static final String ROUTE_NAME = "/project-management/all-tasks";
 
     public AbstractAllTasksListView(BaseService<UUID, Task> service, BervanLogger log) {

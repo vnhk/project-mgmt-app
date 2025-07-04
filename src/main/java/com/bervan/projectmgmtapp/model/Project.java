@@ -2,7 +2,7 @@ package com.bervan.projectmgmtapp.model;
 
 import com.bervan.common.model.BervanBaseEntity;
 import com.bervan.common.model.PersistableTableData;
-import com.bervan.common.model.VaadinTableColumn;
+import com.bervan.common.model.VaadinBervanColumn;
 import com.bervan.history.model.HistoryCollection;
 import com.bervan.history.model.HistorySupported;
 import com.bervan.ieentities.ExcelIEEntity;
@@ -29,26 +29,26 @@ public class Project extends BervanBaseEntity<UUID> implements PersistableTableD
     @Id
     private UUID id;
     @Size(min = 4, max = 200)
-    @VaadinTableColumn(displayName = "Name", internalName = Project_name_columnName)
+    @VaadinBervanColumn(displayName = "Name", internalName = Project_name_columnName)
     private String name;
     @Unique
     @Size(min = 2, max = 20)
-    @VaadinTableColumn(displayName = "Number", internalName = Project_number_columnName, inEditForm = false)
+    @VaadinBervanColumn(displayName = "Number", internalName = Project_number_columnName, inEditForm = false)
     private String number;
     private boolean deleted;
 
-    @VaadinTableColumn(displayName = "Status", internalName = Project_status_columnName, strValues = {"Open", "In Progress", "Done", "Canceled"}, defaultValue = "Open")
+    @VaadinBervanColumn(displayName = "Status", internalName = Project_status_columnName, strValues = {"Open", "In Progress", "Done", "Canceled"}, defaultValue = "Open")
     @Size(min = 4, max = 20)
     private String status;
 
-    @VaadinTableColumn(displayName = "Priority", internalName = Project_priority_columnName, strValues = {"Low", "Medium", "High", "Critical"}, defaultValue = "Medium")
+    @VaadinBervanColumn(displayName = "Priority", internalName = Project_priority_columnName, strValues = {"Low", "Medium", "High", "Critical"}, defaultValue = "Medium")
     @Size(min = 3, max = 15)
     private String priority;
 
     @Lob
     @Size(max = 5000000)
     @Column(columnDefinition = "MEDIUMTEXT")
-    @VaadinTableColumn(displayName = "Description", internalName = Project_description_columnName, isWysiwyg = true)
+    @VaadinBervanColumn(displayName = "Description", internalName = Project_description_columnName, isWysiwyg = true)
     private String description;
 
     private LocalDateTime modificationDate;

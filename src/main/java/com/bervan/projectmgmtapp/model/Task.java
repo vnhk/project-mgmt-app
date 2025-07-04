@@ -2,7 +2,7 @@ package com.bervan.projectmgmtapp.model;
 
 import com.bervan.common.model.BervanBaseEntity;
 import com.bervan.common.model.PersistableTableData;
-import com.bervan.common.model.VaadinTableColumn;
+import com.bervan.common.model.VaadinBervanColumn;
 import com.bervan.history.model.HistoryCollection;
 import com.bervan.history.model.HistorySupported;
 import com.bervan.ieentities.ExcelIEEntity;
@@ -31,32 +31,32 @@ public class Task extends BervanBaseEntity<UUID> implements PersistableTableData
     @Id
     private UUID id;
     @Size(min = 4, max = 200)
-    @VaadinTableColumn(displayName = "Name", internalName = Task_name_columnName)
+    @VaadinBervanColumn(displayName = "Name", internalName = Task_name_columnName)
     private String name;
     @Size(min = 4, max = 30)
-    @VaadinTableColumn(displayName = "Number", internalName = Task_number_columnName, inSaveForm = false, inEditForm = false)
+    @VaadinBervanColumn(displayName = "Number", internalName = Task_number_columnName, inSaveForm = false, inEditForm = false)
     private String number;
     private boolean deleted;
 
-    @VaadinTableColumn(displayName = "Status", internalName = Task_status_columnName, strValues = {"Open", "In Progress", "Done", "Canceled"}, defaultValue = "Open")
+    @VaadinBervanColumn(displayName = "Status", internalName = Task_status_columnName, strValues = {"Open", "In Progress", "Done", "Canceled"}, defaultValue = "Open")
     @Size(min = 4, max = 20)
     private String status;
 
-    @VaadinTableColumn(displayName = "Type", internalName = Task_type_columnName, strValues = {"Task", "Bug", "Story", "Objective", "Feature"}, defaultValue = "Task")
+    @VaadinBervanColumn(displayName = "Type", internalName = Task_type_columnName, strValues = {"Task", "Bug", "Story", "Objective", "Feature"}, defaultValue = "Task")
     @Size(min = 3, max = 15)
     private String type;
 
-    @VaadinTableColumn(displayName = "Priority", internalName = Task_priority_columnName, strValues = {"Low", "Medium", "High", "Critical"}, defaultValue = "Medium")
+    @VaadinBervanColumn(displayName = "Priority", internalName = Task_priority_columnName, strValues = {"Low", "Medium", "High", "Critical"}, defaultValue = "Medium")
     @Size(min = 3, max = 15)
     private String priority;
 
     @Lob
     @Size(max = 5000000)
     @Column(columnDefinition = "MEDIUMTEXT")
-    @VaadinTableColumn(displayName = "Description", internalName = Task_description_columnName, isWysiwyg = true)
+    @VaadinBervanColumn(displayName = "Description", internalName = Task_description_columnName, isWysiwyg = true)
     private String description;
 
-    @VaadinTableColumn(displayName = "Due Date", internalName = Task_dueDate_columnName)
+    @VaadinBervanColumn(displayName = "Due Date", internalName = Task_dueDate_columnName)
     private LocalDateTime dueDate;
 
     private LocalDateTime modificationDate;

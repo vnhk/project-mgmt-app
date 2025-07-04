@@ -1,6 +1,6 @@
 package com.bervan.projectmgmtapp.views;
 
-import com.bervan.common.AbstractTableView;
+import com.bervan.common.AbstractBervanTableView;
 import com.bervan.common.service.BaseService;
 import com.bervan.core.model.BervanLogger;
 import com.bervan.projectmgmtapp.model.Project;
@@ -12,7 +12,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 
 import java.util.UUID;
 
-public abstract class AbstractProjectListView extends AbstractTableView<UUID, Project> {
+public abstract class AbstractProjectListView extends AbstractBervanTableView<UUID, Project> {
     public static final String ROUTE_NAME = "/project-management/projects";
 
     public AbstractProjectListView(BaseService<UUID, Project> service, BervanLogger log) {
