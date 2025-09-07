@@ -1,6 +1,6 @@
 package com.bervan.projectmgmtapp.views;
 
-import com.bervan.common.AbstractBervanTableView;
+import com.bervan.common.view.AbstractBervanTableView;
 import com.bervan.common.search.SearchRequest;
 import com.bervan.common.search.model.SearchOperation;
 import com.bervan.common.service.BaseService;

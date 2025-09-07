@@ -1,8 +1,8 @@
 package com.bervan.projectmgmtapp.views;
 
-import com.bervan.common.AbstractPageView;
-import com.bervan.common.BervanButton;
-import com.bervan.common.WysiwygTextArea;
+import com.bervan.common.view.AbstractPageView;
+import com.bervan.common.component.BervanButton;
+import com.bervan.common.component.WysiwygTextArea;
 import com.bervan.core.model.BervanLogger;
 import com.bervan.projectmgmtapp.model.Project;
 import com.bervan.projectmgmtapp.service.ProjectService;
