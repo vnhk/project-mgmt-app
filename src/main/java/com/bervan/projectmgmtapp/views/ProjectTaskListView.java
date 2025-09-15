@@ -1,9 +1,9 @@
 package com.bervan.projectmgmtapp.views;
 
-import com.bervan.common.view.AbstractBervanTableView;
 import com.bervan.common.search.SearchRequest;
 import com.bervan.common.search.model.SearchOperation;
 import com.bervan.common.service.BaseService;
+import com.bervan.common.view.AbstractBervanTableView;
 import com.bervan.core.model.BervanLogger;
 import com.bervan.projectmgmtapp.model.Project;
 import com.bervan.projectmgmtapp.model.Task;
@@ -15,6 +15,7 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 

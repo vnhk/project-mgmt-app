@@ -12,6 +12,7 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -22,7 +23,7 @@ public class AbstractAllTasksListView extends AbstractBervanTableView<UUID, Task
     public AbstractAllTasksListView(BaseService<UUID, Task> service, BervanLogger log) {
         super(new ProjectsPageLayout(ROUTE_NAME, AbstractTaskDetailsView.ROUTE_NAME,
                 AbstractProjectDetailsView.ROUTE_NAME
-        ), service, log, Task.class);
+        ), service, log, Task .class);
         renderCommonComponents();
 
         addButton.setVisible(false);
