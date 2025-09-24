@@ -4,10 +4,11 @@ import com.bervan.common.search.SearchRequest;
 import com.bervan.common.search.model.SearchOperation;
 import com.bervan.common.service.BaseService;
 import com.bervan.common.view.AbstractBervanTableView;
+import com.bervan.common.view.AbstractFiltersLayout;
+import com.bervan.common.view.DefaultFilterValuesContainer;
 import com.bervan.core.model.BervanLogger;
 import com.bervan.projectmgmtapp.model.Project;
 import com.bervan.projectmgmtapp.model.Task;
-import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.icon.Icon;
@@ -25,7 +26,6 @@ public class ProjectTaskListView extends AbstractBervanTableView<UUID, Task> {
     public ProjectTaskListView(BaseService<UUID, Task> service, BervanLogger log, ProjectsPageLayout pageLayout, Project project) {
         super(pageLayout, service, log, Task.class);
         this.project = project;
-        updateFilterMenu(filtersLayout.getCheckboxFiltersMap());
         renderCommonComponents();
     }
 
@@ -38,6 +38,20 @@ public class ProjectTaskListView extends AbstractBervanTableView<UUID, Task> {
     }
 
     @Override
+    protected AbstractFiltersLayout<UUID, Task> buildFiltersLayout(Class<Task> taskClass) {
+        try {
+            Map<Field, Map<Object, Boolean>> checkboxDefaultValues = new HashMap<>();
+            checkboxDefaultValues.put(Task.class.getDeclaredField("status"), Map.of("Canceled", false, "Done", false));
+            return new AbstractFiltersLayout<>(tClass, applyFiltersButton, DefaultFilterValuesContainer
+                    .builder()
+                    .checkboxFiltersMapDefaultValues(checkboxDefaultValues)
+                    .build());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     protected void preColumnAutoCreation(Grid<Task> grid) {
         grid.addComponentColumn(entity -> {
                     Icon linkIcon = new Icon(VaadinIcon.LINK);
@@ -46,18 +60,6 @@ public class ProjectTaskListView extends AbstractBervanTableView<UUID, Task> {
                 }).setKey("link")
                 .setWidth("10px")
                 .setResizable(false);
-    }
-
-    protected void updateFilterMenu(Map<Field, Map<Object, Checkbox>> checkboxFiltersMap) {
-        //default - only open tasks
-        checkboxFiltersMap.keySet().stream().filter(e -> e.getName().equals("status"))
-                .forEach(e -> {
-                    checkboxFiltersMap.get(e)
-                            .get("Canceled").setValue(false);
-                    checkboxFiltersMap.get(e)
-                            .get("Done").setValue(false);
-                });
-
     }
 
     @Override

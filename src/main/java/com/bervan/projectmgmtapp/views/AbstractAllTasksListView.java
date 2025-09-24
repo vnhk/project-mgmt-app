@@ -1,10 +1,11 @@
 package com.bervan.projectmgmtapp.views;
 
-import com.bervan.common.view.AbstractBervanTableView;
 import com.bervan.common.service.BaseService;
+import com.bervan.common.view.AbstractBervanTableView;
+import com.bervan.common.view.AbstractFiltersLayout;
+import com.bervan.common.view.DefaultFilterValuesContainer;
 import com.bervan.core.model.BervanLogger;
 import com.bervan.projectmgmtapp.model.Task;
-import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.icon.Icon;
@@ -23,10 +24,8 @@ public class AbstractAllTasksListView extends AbstractBervanTableView<UUID, Task
     public AbstractAllTasksListView(BaseService<UUID, Task> service, BervanLogger log) {
         super(new ProjectsPageLayout(ROUTE_NAME, AbstractTaskDetailsView.ROUTE_NAME,
                 AbstractProjectDetailsView.ROUTE_NAME
-        ), service, log, Task .class);
-        updateFilterMenu(filtersLayout.getCheckboxFiltersMap());
+        ), service, log, Task.class);
         renderCommonComponents();
-
         addButton.setVisible(false);
 
     }
@@ -57,15 +56,17 @@ public class AbstractAllTasksListView extends AbstractBervanTableView<UUID, Task
         return columnsToFetchForTable;
     }
 
-    protected void updateFilterMenu(Map<Field, Map<Object, Checkbox>> checkboxFiltersMap) {
-        //default - only open tasks
-        checkboxFiltersMap.keySet().stream().filter(e -> e.getName().equals("status"))
-                .forEach(e -> {
-                    checkboxFiltersMap.get(e)
-                            .get("Canceled").setValue(false);
-                    checkboxFiltersMap.get(e)
-                            .get("Done").setValue(false);
-                });
-
+    @Override
+    protected AbstractFiltersLayout<UUID, Task> buildFiltersLayout(Class<Task> taskClass) {
+        try {
+            Map<Field, Map<Object, Boolean>> checkboxDefaultValues = new HashMap<>();
+            checkboxDefaultValues.put(Task.class.getDeclaredField("status"), Map.of("Canceled", false, "Done", false));
+            return new AbstractFiltersLayout<>(tClass, applyFiltersButton, DefaultFilterValuesContainer
+                    .builder()
+                    .checkboxFiltersMapDefaultValues(checkboxDefaultValues)
+                    .build());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
