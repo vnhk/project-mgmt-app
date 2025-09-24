@@ -24,11 +24,11 @@ public class AbstractAllTasksListView extends AbstractBervanTableView<UUID, Task
         super(new ProjectsPageLayout(ROUTE_NAME, AbstractTaskDetailsView.ROUTE_NAME,
                 AbstractProjectDetailsView.ROUTE_NAME
         ), service, log, Task .class);
+        updateFilterMenu(filtersLayout.getCheckboxFiltersMap());
         renderCommonComponents();
 
         addButton.setVisible(false);
 
-        updateFilterMenu(filtersLayout.getCheckboxFiltersMap());
     }
 
     @Override
