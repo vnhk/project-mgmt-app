@@ -58,7 +58,7 @@ public class ProjectTaskListView extends AbstractBervanTableView<UUID, Task> {
                     linkIcon.getStyle().set("cursor", "pointer");
                     return new Anchor(AbstractTaskDetailsView.ROUTE_NAME + entity.getId(), new HorizontalLayout(linkIcon));
                 }).setKey("link")
-                .setWidth("10px")
+                .setWidth("6px")
                 .setResizable(false);
     }
 
