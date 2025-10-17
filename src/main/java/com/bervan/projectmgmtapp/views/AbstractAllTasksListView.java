@@ -1,5 +1,6 @@
 package com.bervan.projectmgmtapp.views;
 
+import com.bervan.common.config.BervanViewConfig;
 import com.bervan.common.service.BaseService;
 import com.bervan.common.view.AbstractBervanTableView;
 import com.bervan.common.view.AbstractFiltersLayout;
@@ -21,10 +22,10 @@ import java.util.UUID;
 public class AbstractAllTasksListView extends AbstractBervanTableView<UUID, Task> {
     public static final String ROUTE_NAME = "/project-management/all-tasks";
 
-    public AbstractAllTasksListView(BaseService<UUID, Task> service, BervanLogger log) {
+    public AbstractAllTasksListView(BaseService<UUID, Task> service, BervanLogger log, BervanViewConfig bervanViewConfig) {
         super(new ProjectsPageLayout(ROUTE_NAME, AbstractTaskDetailsView.ROUTE_NAME,
                 AbstractProjectDetailsView.ROUTE_NAME
-        ), service, log, Task.class);
+        ), service, log, bervanViewConfig, Task.class);
         renderCommonComponents();
         addButton.setVisible(false);
 
@@ -64,7 +65,7 @@ public class AbstractAllTasksListView extends AbstractBervanTableView<UUID, Task
             return new AbstractFiltersLayout<>(tClass, applyFiltersButton, DefaultFilterValuesContainer
                     .builder()
                     .checkboxFiltersMapDefaultValues(checkboxDefaultValues)
-                    .build());
+                    .build(), bervanViewConfig);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

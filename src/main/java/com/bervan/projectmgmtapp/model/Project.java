@@ -2,7 +2,6 @@ package com.bervan.projectmgmtapp.model;
 
 import com.bervan.common.model.BervanBaseEntity;
 import com.bervan.common.model.PersistableTableData;
-import com.bervan.common.model.VaadinBervanColumn;
 import com.bervan.history.model.HistoryCollection;
 import com.bervan.history.model.HistorySupported;
 import com.bervan.ieentities.ExcelIEEntity;
@@ -29,26 +28,21 @@ public class Project extends BervanBaseEntity<UUID> implements PersistableTableD
     @Id
     private UUID id;
     @Size(min = 4, max = 200)
-    @VaadinBervanColumn(displayName = "Name", internalName = Project_name_columnName)
     private String name;
     @Unique
     @Size(min = 2, max = 20)
-    @VaadinBervanColumn(displayName = "Number", internalName = Project_number_columnName, inEditForm = false)
     private String number;
     private boolean deleted;
 
-    @VaadinBervanColumn(displayName = "Status", internalName = Project_status_columnName, strValues = {"Open", "In Progress", "Done", "Canceled"}, defaultValue = "Open")
     @Size(min = 4, max = 20)
     private String status;
 
-    @VaadinBervanColumn(displayName = "Priority", internalName = Project_priority_columnName, strValues = {"Low", "Medium", "High", "Critical"}, defaultValue = "Medium")
     @Size(min = 3, max = 15)
     private String priority;
 
     @Lob
     @Size(max = 5000000)
     @Column(columnDefinition = "MEDIUMTEXT")
-    @VaadinBervanColumn(displayName = "Description", internalName = Project_description_columnName, isWysiwyg = true)
     private String description;
 
     private LocalDateTime modificationDate;
@@ -66,10 +60,6 @@ public class Project extends BervanBaseEntity<UUID> implements PersistableTableD
 
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getNumber() {
         return number;
     }
@@ -78,28 +68,28 @@ public class Project extends BervanBaseEntity<UUID> implements PersistableTableD
         this.number = number;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setHistory(Set<HistoryProject> history) {
-        this.history = history;
-    }
-
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getStatus() {
         return status;
     }
 
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public UUID getId() {
@@ -143,6 +133,10 @@ public class Project extends BervanBaseEntity<UUID> implements PersistableTableD
 
     public Set<HistoryProject> getHistory() {
         return history;
+    }
+
+    public void setHistory(Set<HistoryProject> history) {
+        this.history = history;
     }
 
     public Set<Task> getTasks() {

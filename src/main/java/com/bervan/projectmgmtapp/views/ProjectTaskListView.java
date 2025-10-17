@@ -1,5 +1,6 @@
 package com.bervan.projectmgmtapp.views;
 
+import com.bervan.common.config.BervanViewConfig;
 import com.bervan.common.search.SearchRequest;
 import com.bervan.common.search.model.SearchOperation;
 import com.bervan.common.service.BaseService;
@@ -23,8 +24,8 @@ import java.util.UUID;
 public class ProjectTaskListView extends AbstractBervanTableView<UUID, Task> {
     private final Project project;
 
-    public ProjectTaskListView(BaseService<UUID, Task> service, BervanLogger log, ProjectsPageLayout pageLayout, Project project) {
-        super(pageLayout, service, log, Task.class);
+    public ProjectTaskListView(BaseService<UUID, Task> service, BervanLogger log, ProjectsPageLayout pageLayout, Project project, BervanViewConfig bervanViewConfig) {
+        super(pageLayout, service, log, bervanViewConfig, Task.class);
         this.project = project;
         renderCommonComponents();
     }
@@ -45,7 +46,7 @@ public class ProjectTaskListView extends AbstractBervanTableView<UUID, Task> {
             return new AbstractFiltersLayout<>(tClass, applyFiltersButton, DefaultFilterValuesContainer
                     .builder()
                     .checkboxFiltersMapDefaultValues(checkboxDefaultValues)
-                    .build());
+                    .build(), bervanViewConfig);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

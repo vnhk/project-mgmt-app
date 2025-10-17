@@ -2,7 +2,6 @@ package com.bervan.projectmgmtapp.model;
 
 import com.bervan.common.model.BervanBaseEntity;
 import com.bervan.common.model.PersistableTableData;
-import com.bervan.common.model.VaadinBervanColumn;
 import com.bervan.history.model.HistoryCollection;
 import com.bervan.history.model.HistorySupported;
 import com.bervan.ieentities.ExcelIEEntity;
@@ -31,32 +30,25 @@ public class Task extends BervanBaseEntity<UUID> implements PersistableTableData
     @Id
     private UUID id;
     @Size(min = 4, max = 200)
-    @VaadinBervanColumn(displayName = "Name", internalName = Task_name_columnName)
     private String name;
     @Size(min = 4, max = 30)
-    @VaadinBervanColumn(displayName = "Number", internalName = Task_number_columnName, inSaveForm = false, inEditForm = false)
     private String number;
     private boolean deleted;
 
-    @VaadinBervanColumn(displayName = "Status", internalName = Task_status_columnName, strValues = {"Open", "In Progress", "Done", "Canceled"}, defaultValue = "Open")
     @Size(min = 4, max = 20)
     private String status;
 
-    @VaadinBervanColumn(displayName = "Type", internalName = Task_type_columnName, strValues = {"Task", "Bug", "Story", "Objective", "Feature"}, defaultValue = "Task")
     @Size(min = 3, max = 15)
     private String type;
 
-    @VaadinBervanColumn(displayName = "Priority", internalName = Task_priority_columnName, strValues = {"Low", "Medium", "High", "Critical"}, defaultValue = "Medium")
     @Size(min = 3, max = 15)
     private String priority;
 
     @Lob
     @Size(max = 5000000)
     @Column(columnDefinition = "MEDIUMTEXT")
-    @VaadinBervanColumn(displayName = "Description", internalName = Task_description_columnName, isWysiwyg = true)
     private String description;
 
-    @VaadinBervanColumn(displayName = "Due Date", internalName = Task_dueDate_columnName)
     private LocalDateTime dueDate;
 
     private LocalDateTime modificationDate;
@@ -75,19 +67,15 @@ public class Task extends BervanBaseEntity<UUID> implements PersistableTableData
     @HistoryCollection(historyClass = HistoryTask.class)
     private Set<HistoryTask> history = new HashSet<>();
 
+    public Task() {
+
+    }
+
     public Set<TaskRelation> getRelationships() {
         Set<TaskRelation> r = new HashSet<>();
         r.addAll(childRelationships != null ? childRelationships : new ArrayList<>());
         r.addAll(parentRelationships != null ? parentRelationships : new ArrayList<>());
         return r;
-    }
-
-    public Task() {
-
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getNumber() {
@@ -98,28 +86,28 @@ public class Task extends BervanBaseEntity<UUID> implements PersistableTableData
         this.number = number;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setHistory(Set<HistoryTask> history) {
-        this.history = history;
-    }
-
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getStatus() {
         return status;
     }
 
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public UUID getId() {
@@ -195,6 +183,10 @@ public class Task extends BervanBaseEntity<UUID> implements PersistableTableData
 
     public Set<HistoryTask> getHistory() {
         return history;
+    }
+
+    public void setHistory(Set<HistoryTask> history) {
+        this.history = history;
     }
 
     public Project getProject() {

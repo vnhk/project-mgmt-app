@@ -1,5 +1,6 @@
 package com.bervan.projectmgmtapp.views;
 
+import com.bervan.common.config.BervanViewConfig;
 import com.bervan.common.view.AbstractPageView;
 import com.bervan.common.component.BervanButton;
 import com.bervan.common.component.WysiwygTextArea;
@@ -23,11 +24,13 @@ public abstract class AbstractProjectDetailsView extends AbstractPageView implem
     private final TaskService taskService;
     private final BervanLogger logger;
     private final ProjectsPageLayout projectsPageLayout;
+    private final BervanViewConfig bervanViewConfig;
 
-    public AbstractProjectDetailsView(ProjectService projectService, TaskService taskService, BervanLogger logger) {
+    public AbstractProjectDetailsView(ProjectService projectService, TaskService taskService, BervanLogger logger, BervanViewConfig bervanViewConfig) {
         this.projectService = projectService;
         this.logger = logger;
         this.taskService = taskService;
+        this.bervanViewConfig = bervanViewConfig;
 
         projectsPageLayout = new ProjectsPageLayout(ROUTE_NAME, AbstractTaskDetailsView.ROUTE_NAME);
         add(projectsPageLayout);
@@ -75,7 +78,7 @@ public abstract class AbstractProjectDetailsView extends AbstractPageView implem
             // Tasks
             H4 subtasksHeader = new H4("Tasks:");
             ProjectTaskListView taskDetailsView
-                    = new ProjectTaskListView(taskService, logger, projectsPageLayout, project.get());
+                    = new ProjectTaskListView(taskService, logger, projectsPageLayout, project.get(), bervanViewConfig);
 
             // Layout
             add(header, description, saveDescriptionButton, subtasksHeader, taskDetailsView);
