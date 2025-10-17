@@ -1,0 +1,51 @@
+columns:
+  - field: name
+    displayName: "Name"
+    internalNameField: "Project_name_columnName"
+    inSaveForm: true
+    inEditForm: true
+    inTable: true
+    required: true
+    min: 4
+    max: 200
+
+  - field: number
+    displayName: "Number"
+    internalNameField: "Project_number_columnName"
+    inSaveForm: true
+    inEditForm: false
+    inTable: true
+    required: true
+    min: 2
+    max: 20
+
+  - field: status
+    displayName: "Status"
+    internalNameField: "Project_status_columnName"
+    strValues: [ "Open", "In Progress", "Done", "Canceled" ]
+    defaultValue: "Open"
+    inSaveForm: true
+    inEditForm: true
+    inTable: true
+    required: true
+
+  - field: priority
+    displayName: "Priority"
+    internalNameField: "Project_priority_columnName"
+    strValues: [ "Low", "Medium", "High", "Critical" ]
+    defaultValue: "Medium"
+    inSaveForm: true
+    inEditForm: true
+    inTable: true
+    required: true
+
+  - field: description
+    displayName: "Description"
+    internalNameField: "Project_description_columnName"
+    inSaveForm: true
+    inEditForm: true
+    inTable: true
+    required: false
+    min: 0
+    max: 5000000
+    isWysiwyg: true

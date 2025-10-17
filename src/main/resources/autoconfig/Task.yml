@@ -1,0 +1,75 @@
+columns:
+  - field: name
+    displayName: "Name"
+    internalNameField: "Task_name_columnName"
+    inSaveForm: true
+    inEditForm: true
+    inTable: true
+    required: true
+    min: 4
+    max: 200
+
+  - field: number
+    displayName: "Number"
+    internalNameField: "Task_number_columnName"
+    inSaveForm: false
+    inEditForm: false
+    inTable: true
+    required: true
+    min: 4
+    max: 30
+
+  - field: status
+    displayName: "Status"
+    internalNameField: "Task_status_columnName"
+    strValues: [ "Open", "In Progress", "Done", "Canceled" ]
+    defaultValue: "Open"
+    inSaveForm: true
+    inEditForm: true
+    inTable: true
+    required: true
+    min: 4
+    max: 20
+
+  - field: type
+    displayName: "Type"
+    internalNameField: "Task_type_columnName"
+    strValues: [ "Task", "Bug", "Story", "Objective", "Feature" ]
+    defaultValue: "Task"
+    inSaveForm: true
+    inEditForm: true
+    inTable: true
+    required: true
+    min: 3
+    max: 15
+
+  - field: priority
+    displayName: "Priority"
+    internalNameField: "Task_priority_columnName"
+    strValues: [ "Low", "Medium", "High", "Critical" ]
+    defaultValue: "Medium"
+    inSaveForm: true
+    inEditForm: true
+    inTable: true
+    required: true
+    min: 3
+    max: 15
+
+  - field: description
+    displayName: "Description"
+    internalNameField: "Task_description_columnName"
+    inSaveForm: true
+    inEditForm: true
+    inTable: true
+    required: false
+    min: 0
+    max: 5000000
+    isWysiwyg: true
+
+  - field: dueDate
+    displayName: "Due Date"
+    internalNameField: "Task_dueDate_columnName"
+    inSaveForm: true
+    inEditForm: true
+    inTable: true
+    required: false
