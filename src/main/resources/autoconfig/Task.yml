@@ -64,7 +64,7 @@ columns:
     required: false
     min: 0
     max: 5000000
-    isWysiwyg: true
+    wysiwyg: true
 
   - field: dueDate
     displayName: "Due Date"
