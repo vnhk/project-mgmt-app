@@ -1,9 +1,10 @@
 package com.bervan.projectmgmtapp.views;
 
-import com.bervan.common.config.BervanViewConfig;
-import com.bervan.common.view.AbstractPageView;
 import com.bervan.common.component.BervanButton;
 import com.bervan.common.component.WysiwygTextArea;
+import com.bervan.common.config.BervanViewConfig;
+import com.bervan.common.config.ClassViewAutoConfigColumn;
+import com.bervan.common.view.AbstractPageView;
 import com.bervan.core.model.BervanLogger;
 import com.bervan.projectmgmtapp.model.Project;
 import com.bervan.projectmgmtapp.service.ProjectService;
@@ -62,7 +63,9 @@ public abstract class AbstractProjectDetailsView extends AbstractPageView implem
 
             // Description Section
             BervanButton saveDescriptionButton = new BervanButton("Save", false);
-            WysiwygTextArea description = new WysiwygTextArea("editor_project_details_" + project.get().getId(), project.get().getDescription(), true);
+            ClassViewAutoConfigColumn config = bervanViewConfig.get("Project").get("description");
+            WysiwygTextArea description = new WysiwygTextArea("editor_project_details_" + project.get().getId(), project.get().getDescription(), true,
+                    config.isRequired(), config.getMin(), config.getMax());
             description.setSwitchButtonPostAction(() -> {
                 saveDescriptionButton.setVisible(!description.isViewMode());
             });

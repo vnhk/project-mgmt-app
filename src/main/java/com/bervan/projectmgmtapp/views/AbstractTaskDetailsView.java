@@ -1,8 +1,10 @@
 package com.bervan.projectmgmtapp.views;
 
-import com.bervan.common.view.AbstractPageView;
 import com.bervan.common.component.BervanButton;
 import com.bervan.common.component.WysiwygTextArea;
+import com.bervan.common.config.BervanViewConfig;
+import com.bervan.common.config.ClassViewAutoConfigColumn;
+import com.bervan.common.view.AbstractPageView;
 import com.bervan.core.model.BervanLogger;
 import com.bervan.projectmgmtapp.model.Task;
 import com.bervan.projectmgmtapp.model.TaskRelation;
@@ -24,11 +26,13 @@ public abstract class AbstractTaskDetailsView extends AbstractPageView implement
     public static final String ROUTE_NAME = "/project-management/task-details/";
     private final TaskService taskService;
     private final BervanLogger logger;
+    private final BervanViewConfig bervanViewConfig;
     private ProjectsPageLayout projectsPageLayout = new ProjectsPageLayout(ROUTE_NAME);
 
-    public AbstractTaskDetailsView(TaskService taskService, BervanLogger logger) {
+    public AbstractTaskDetailsView(TaskService taskService, BervanLogger logger, BervanViewConfig bervanViewConfig) {
         this.taskService = taskService;
         this.logger = logger;
+        this.bervanViewConfig = bervanViewConfig;
         add(projectsPageLayout);
     }
 
@@ -56,7 +60,8 @@ public abstract class AbstractTaskDetailsView extends AbstractPageView implement
 
             // Description Section
             BervanButton saveDescriptionButton = new BervanButton("Save", false);
-            WysiwygTextArea description = new WysiwygTextArea("editor_task_details_" + task.getId(), task.getDescription(), true);
+            ClassViewAutoConfigColumn config = bervanViewConfig.get("Task").get("description");
+            WysiwygTextArea description = new WysiwygTextArea("editor_task_details_" + task.getId(), task.getDescription(), true, config.isRequired(), config.getMin(), config.getMax());
             description.setSwitchButtonPostAction(() -> {
                 saveDescriptionButton.setVisible(!description.isViewMode());
             });
