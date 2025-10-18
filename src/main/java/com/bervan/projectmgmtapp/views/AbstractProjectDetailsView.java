@@ -71,6 +71,10 @@ public abstract class AbstractProjectDetailsView extends AbstractPageView implem
             });
 
             saveDescriptionButton.addClickListener(e -> {
+                description.validate();
+                if (description.isInvalid()) {
+                    return;
+                }
                 Project latestProject = projectService.loadById(project.get().getId()).get();
                 latestProject.setDescription(description.getValue());
                 projectService.save(latestProject);

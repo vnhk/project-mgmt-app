@@ -67,6 +67,10 @@ public abstract class AbstractTaskDetailsView extends AbstractPageView implement
             });
 
             saveDescriptionButton.addClickListener(e -> {
+                description.validate();
+                if (description.isInvalid()) {
+                    return;
+                }
                 Task data = taskOptional.get();
                 data.setDescription(description.getValue());
                 taskService.save(data);
