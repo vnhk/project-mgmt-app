@@ -28,6 +28,10 @@ public class ProjectTaskListView extends AbstractBervanTableView<UUID, Task> {
         super(pageLayout, service, log, bervanViewConfig, Task.class);
         this.project = project;
         renderCommonComponents();
+        tableToolbarActions.getEditItemDialog().setCustomizeSavingInEditFormFunction((Task task) -> {
+            task.setProject(project);
+            return task;
+        });
     }
 
     @Override
@@ -74,5 +78,10 @@ public class ProjectTaskListView extends AbstractBervanTableView<UUID, Task> {
     protected Task customizeSavingInCreateForm(Task newItem) {
         newItem.setProject(project);
         return super.customizeSavingInCreateForm(newItem);
+    }
+
+    @Override
+    protected Task customizeEditingInEditItemForm(Task item) {
+        return super.customizeEditingInEditItemForm(item);
     }
 }
