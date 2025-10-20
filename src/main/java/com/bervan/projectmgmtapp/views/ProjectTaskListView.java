@@ -75,8 +75,8 @@ public class ProjectTaskListView extends AbstractBervanTableView<UUID, Task> {
     }
 
     @Override
-    protected Task customizeSavingInCreateForm(Task newItem) {
+    protected Task preSaveActions(Task newItem) {
         newItem.setProject(project);
-        return super.customizeSavingInCreateForm(newItem);
+        return super.preSaveActions(newItem);
     }
 }
