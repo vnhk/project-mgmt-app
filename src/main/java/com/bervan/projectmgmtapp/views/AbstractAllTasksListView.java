@@ -5,7 +5,6 @@ import com.bervan.common.service.BaseService;
 import com.bervan.common.view.AbstractBervanTableView;
 import com.bervan.common.view.AbstractFiltersLayout;
 import com.bervan.common.view.DefaultFilterValuesContainer;
-import com.bervan.core.model.BervanLogger;
 import com.bervan.projectmgmtapp.model.Task;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Anchor;
@@ -22,10 +21,10 @@ import java.util.UUID;
 public class AbstractAllTasksListView extends AbstractBervanTableView<UUID, Task> {
     public static final String ROUTE_NAME = "/project-management/all-tasks";
 
-    public AbstractAllTasksListView(BaseService<UUID, Task> service, BervanLogger log, BervanViewConfig bervanViewConfig) {
+    public AbstractAllTasksListView(BaseService<UUID, Task> service, BervanViewConfig bervanViewConfig) {
         super(new ProjectsPageLayout(ROUTE_NAME, AbstractTaskDetailsView.ROUTE_NAME,
                 AbstractProjectDetailsView.ROUTE_NAME
-        ), service, log, bervanViewConfig, Task.class);
+        ), service, bervanViewConfig, Task.class);
         renderCommonComponents();
         addButton.setVisible(false);
 

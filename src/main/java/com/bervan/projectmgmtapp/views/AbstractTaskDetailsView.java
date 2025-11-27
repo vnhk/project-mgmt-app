@@ -5,7 +5,6 @@ import com.bervan.common.component.WysiwygTextArea;
 import com.bervan.common.config.BervanViewConfig;
 import com.bervan.common.config.ClassViewAutoConfigColumn;
 import com.bervan.common.view.AbstractPageView;
-import com.bervan.core.model.BervanLogger;
 import com.bervan.projectmgmtapp.model.Task;
 import com.bervan.projectmgmtapp.model.TaskRelation;
 import com.bervan.projectmgmtapp.service.TaskService;
@@ -25,13 +24,11 @@ import java.util.stream.Collectors;
 public abstract class AbstractTaskDetailsView extends AbstractPageView implements HasUrlParameter<String> {
     public static final String ROUTE_NAME = "/project-management/task-details/";
     private final TaskService taskService;
-    private final BervanLogger logger;
     private final BervanViewConfig bervanViewConfig;
     private ProjectsPageLayout projectsPageLayout = new ProjectsPageLayout(ROUTE_NAME);
 
-    public AbstractTaskDetailsView(TaskService taskService, BervanLogger logger, BervanViewConfig bervanViewConfig) {
+    public AbstractTaskDetailsView(TaskService taskService, BervanViewConfig bervanViewConfig) {
         this.taskService = taskService;
-        this.logger = logger;
         this.bervanViewConfig = bervanViewConfig;
         add(projectsPageLayout);
     }

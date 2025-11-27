@@ -7,7 +7,6 @@ import com.bervan.common.service.BaseService;
 import com.bervan.common.view.AbstractBervanTableView;
 import com.bervan.common.view.AbstractFiltersLayout;
 import com.bervan.common.view.DefaultFilterValuesContainer;
-import com.bervan.core.model.BervanLogger;
 import com.bervan.projectmgmtapp.model.Project;
 import com.bervan.projectmgmtapp.model.Task;
 import com.vaadin.flow.component.grid.Grid;
@@ -24,8 +23,8 @@ import java.util.UUID;
 public class ProjectTaskListView extends AbstractBervanTableView<UUID, Task> {
     private final Project project;
 
-    public ProjectTaskListView(BaseService<UUID, Task> service, BervanLogger log, ProjectsPageLayout pageLayout, Project project, BervanViewConfig bervanViewConfig) {
-        super(pageLayout, service, log, bervanViewConfig, Task.class);
+    public ProjectTaskListView(BaseService<UUID, Task> service, ProjectsPageLayout pageLayout, Project project, BervanViewConfig bervanViewConfig) {
+        super(pageLayout, service, bervanViewConfig, Task.class);
         this.project = project;
         renderCommonComponents();
         tableToolbarActions.getEditItemDialog().setCustomizeSavingInEditFormFunction((Task task) -> {

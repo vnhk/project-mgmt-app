@@ -2,7 +2,6 @@ package com.bervan.projectmgmtapp.service;
 
 import com.bervan.common.search.SearchService;
 import com.bervan.common.service.BaseService;
-import com.bervan.core.model.BervanLogger;
 import com.bervan.projectmgmtapp.model.Task;
 import com.bervan.projectmgmtapp.repo.TaskHistoryRepository;
 import com.bervan.projectmgmtapp.repo.TaskRepository;
@@ -15,12 +14,10 @@ import java.util.UUID;
 @Service
 public class TaskService extends BaseService<UUID, Task> {
     private final TaskHistoryRepository historyRepository;
-    private final BervanLogger logger;
 
-    public TaskService(TaskRepository repository, SearchService searchService, TaskHistoryRepository historyRepository, BervanLogger logger) {
+    public TaskService(TaskRepository repository, SearchService searchService, TaskHistoryRepository historyRepository) {
         super(repository, searchService);
         this.historyRepository = historyRepository;
-        this.logger = logger;
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.bervan.projectmgmtapp.views;
 import com.bervan.common.config.BervanViewConfig;
 import com.bervan.common.service.BaseService;
 import com.bervan.common.view.AbstractBervanTableView;
-import com.bervan.core.model.BervanLogger;
 import com.bervan.projectmgmtapp.model.Project;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Anchor;
@@ -16,8 +15,8 @@ import java.util.UUID;
 public abstract class AbstractProjectListView extends AbstractBervanTableView<UUID, Project> {
     public static final String ROUTE_NAME = "/project-management/projects";
 
-    public AbstractProjectListView(BaseService<UUID, Project> service, BervanLogger log, BervanViewConfig bervanViewConfig) {
-        super(new ProjectsPageLayout(ROUTE_NAME, AbstractProjectDetailsView.ROUTE_NAME, AbstractTaskDetailsView.ROUTE_NAME), service, log, bervanViewConfig, Project.class);
+    public AbstractProjectListView(BaseService<UUID, Project> service, BervanViewConfig bervanViewConfig) {
+        super(new ProjectsPageLayout(ROUTE_NAME, AbstractProjectDetailsView.ROUTE_NAME, AbstractTaskDetailsView.ROUTE_NAME), service, bervanViewConfig, Project.class);
         renderCommonComponents();
     }
 
