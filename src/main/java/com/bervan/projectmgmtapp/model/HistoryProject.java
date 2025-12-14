@@ -1,7 +1,7 @@
 package com.bervan.projectmgmtapp.model;
 
-import com.bervan.common.model.BervanHistoryEntity;
-import com.bervan.common.model.PersistableTableData;
+import com.bervan.common.model.BervanHistoryOwnedEntity;
+import com.bervan.common.model.PersistableTableOwnedData;
 import com.bervan.history.model.HistoryField;
 import com.bervan.history.model.HistoryOwnerEntity;
 import com.bervan.history.model.HistorySupported;
@@ -15,7 +15,7 @@ import java.util.UUID;
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @HistorySupported
-public class HistoryProject extends BervanHistoryEntity<UUID> implements PersistableTableData<UUID>, ExcelIEEntity<UUID> {
+public class HistoryProject extends BervanHistoryOwnedEntity<UUID> implements PersistableTableOwnedData<UUID>, ExcelIEEntity<UUID> {
     @Id
     private UUID id;
     private LocalDateTime updateDate;
