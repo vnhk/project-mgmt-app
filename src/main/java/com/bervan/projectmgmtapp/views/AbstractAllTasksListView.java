@@ -26,7 +26,7 @@ public class AbstractAllTasksListView extends AbstractBervanTableView<UUID, Task
                 AbstractProjectDetailsView.ROUTE_NAME
         ), service, bervanViewConfig, Task.class);
         renderCommonComponents();
-        addButton.setVisible(false);
+        newItemButton.setVisible(false);
 
     }
 
