@@ -9,6 +9,7 @@ import com.bervan.common.view.AbstractFiltersLayout;
 import com.bervan.common.view.DefaultFilterValuesContainer;
 import com.bervan.projectmgmtapp.model.Project;
 import com.bervan.projectmgmtapp.model.Task;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.icon.Icon;
@@ -20,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+@CssImport("./bervan-project-mgmt.css")
 public class ProjectTaskListView extends AbstractBervanTableView<UUID, Task> {
     private final Project project;
 
@@ -37,6 +39,8 @@ public class ProjectTaskListView extends AbstractBervanTableView<UUID, Task> {
     protected Grid<Task> getGrid() {
         Grid<Task> grid = new Grid<>(Task.class, false);
         buildGridAutomatically(grid);
+
+        AbstractAllTasksListView.customizeTaskColumns(grid);
 
         return grid;
     }
@@ -63,6 +67,12 @@ public class ProjectTaskListView extends AbstractBervanTableView<UUID, Task> {
                     return new Anchor(AbstractTaskDetailsView.ROUTE_NAME + entity.getId(), new HorizontalLayout(linkIcon));
                 }).setKey("link")
                 .setWidth("6px")
+                .setResizable(false);
+
+        grid.addComponentColumn(entity -> TaskTypeIconHelper.createIcon(entity.getType()))
+                .setKey("typeIcon")
+                .setHeader("")
+                .setFlexGrow(0)
                 .setResizable(false);
     }
 

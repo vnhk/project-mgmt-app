@@ -44,6 +44,18 @@ public class HistoryTask extends BervanHistoryOwnedEntity<UUID> implements Persi
     @HistoryField
     private LocalDateTime dueDate;
 
+    @HistoryField
+    private String assignee;
+
+    @HistoryField
+    private Double estimatedHours;
+
+    @HistoryField
+    private Integer completionPercentage;
+
+    @HistoryField
+    private String tags;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @HistoryOwnerEntity
     private Task historyOwner;
@@ -135,5 +147,37 @@ public class HistoryTask extends BervanHistoryOwnedEntity<UUID> implements Persi
 
     public void setHistoryOwner(Task historyOwner) {
         this.historyOwner = historyOwner;
+    }
+
+    public String getAssignee() {
+        return assignee;
+    }
+
+    public void setAssignee(String assignee) {
+        this.assignee = assignee;
+    }
+
+    public Double getEstimatedHours() {
+        return estimatedHours;
+    }
+
+    public void setEstimatedHours(Double estimatedHours) {
+        this.estimatedHours = estimatedHours;
+    }
+
+    public Integer getCompletionPercentage() {
+        return completionPercentage;
+    }
+
+    public void setCompletionPercentage(Integer completionPercentage) {
+        this.completionPercentage = completionPercentage;
+    }
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
     }
 }

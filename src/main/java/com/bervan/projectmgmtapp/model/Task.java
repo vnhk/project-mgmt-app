@@ -26,6 +26,10 @@ public class Task extends BervanOwnedBaseEntity<UUID> implements PersistableTabl
     public static final String Task_description_columnName = "description";
     public static final String Task_priority_columnName = "priority";
     public static final String Task_dueDate_columnName = "dueDate";
+    public static final String Task_assignee_columnName = "assignee";
+    public static final String Task_estimatedHours_columnName = "estimatedHours";
+    public static final String Task_completionPercentage_columnName = "completionPercentage";
+    public static final String Task_tags_columnName = "tags";
 
     @Id
     private UUID id;
@@ -51,16 +55,26 @@ public class Task extends BervanOwnedBaseEntity<UUID> implements PersistableTabl
 
     private LocalDateTime dueDate;
 
+    @Size(max = 100)
+    private String assignee;
+
+    private Double estimatedHours;
+
+    private Integer completionPercentage;
+
+    @Size(max = 500)
+    private String tags;
+
     private LocalDateTime modificationDate;
 
     @ManyToOne
     @NotNull
     private Project project;
 
-    @OneToMany(mappedBy = "child", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "child", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<TaskRelation> childRelationships = new HashSet<>();
 
-    @OneToMany(mappedBy = "parent", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "parent", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<TaskRelation> parentRelationships = new HashSet<>();
 
     @OneToMany(fetch = FetchType.EAGER)
@@ -195,5 +209,37 @@ public class Task extends BervanOwnedBaseEntity<UUID> implements PersistableTabl
 
     public void setProject(Project project) {
         this.project = project;
+    }
+
+    public String getAssignee() {
+        return assignee;
+    }
+
+    public void setAssignee(String assignee) {
+        this.assignee = assignee;
+    }
+
+    public Double getEstimatedHours() {
+        return estimatedHours;
+    }
+
+    public void setEstimatedHours(Double estimatedHours) {
+        this.estimatedHours = estimatedHours;
+    }
+
+    public Integer getCompletionPercentage() {
+        return completionPercentage;
+    }
+
+    public void setCompletionPercentage(Integer completionPercentage) {
+        this.completionPercentage = completionPercentage;
+    }
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
     }
 }
