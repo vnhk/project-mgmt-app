@@ -38,6 +38,12 @@ public class AbstractAllTasksListView extends AbstractBervanTableView<UUID, Task
         Grid<Task> grid = new Grid<>(Task.class, false);
         buildGridAutomatically(grid);
 
+        if (grid.getColumnByKey("name") != null) {
+            grid.getColumnByKey("name").setRenderer(new ComponentRenderer<>(
+                    entity -> new Anchor(AbstractTaskDetailsView.ROUTE_NAME + entity.getId(), entity.getName())
+            ));
+        }
+
         customizeTaskColumns(grid);
 
         return grid;
@@ -45,14 +51,6 @@ public class AbstractAllTasksListView extends AbstractBervanTableView<UUID, Task
 
     @Override
     protected void preColumnAutoCreation(Grid<Task> grid) {
-        grid.addComponentColumn(entity -> {
-                    Icon linkIcon = new Icon(VaadinIcon.LINK);
-                    linkIcon.getStyle().set("cursor", "pointer");
-                    return new Anchor(AbstractTaskDetailsView.ROUTE_NAME + entity.getId(), new HorizontalLayout(linkIcon));
-                }).setKey("link")
-                .setWidth("6px")
-                .setResizable(false);
-
         grid.addComponentColumn(entity -> TaskTypeIconHelper.createIcon(entity.getType()))
                 .setKey("typeIcon")
                 .setHeader("")

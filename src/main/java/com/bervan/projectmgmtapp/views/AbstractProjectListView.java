@@ -28,6 +28,12 @@ public abstract class AbstractProjectListView extends AbstractBervanTableView<UU
         Grid<Project> grid = new Grid<>(Project.class, false);
         buildGridAutomatically(grid);
 
+        if (grid.getColumnByKey("name") != null) {
+            grid.getColumnByKey("name").setRenderer(new ComponentRenderer<>(
+                    project -> new Anchor(ROUTE_NAME + "/" + project.getId(), project.getName())
+            ));
+        }
+
         if (grid.getColumnByKey("status") != null) {
             grid.getColumnByKey("status").setRenderer(new ComponentRenderer<>(
                     project -> StatusBadgeHelper.createStatusBadge(project.getStatus())
@@ -40,16 +46,5 @@ public abstract class AbstractProjectListView extends AbstractBervanTableView<UU
         }
 
         return grid;
-    }
-
-    @Override
-    protected void preColumnAutoCreation(Grid<Project> grid) {
-        grid.addComponentColumn(entity -> {
-                    Icon linkIcon = new Icon(VaadinIcon.LINK);
-                    linkIcon.getStyle().set("cursor", "pointer");
-                    return new Anchor(ROUTE_NAME + "/" + entity.getId(), new HorizontalLayout(linkIcon));
-                }).setKey("link")
-                .setWidth("6px")
-                .setResizable(false);
     }
 }

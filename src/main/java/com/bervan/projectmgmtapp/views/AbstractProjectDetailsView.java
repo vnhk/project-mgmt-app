@@ -1,6 +1,7 @@
 package com.bervan.projectmgmtapp.views;
 
 import com.bervan.common.component.BervanButton;
+import com.bervan.common.component.InlineEditableField;
 import com.bervan.common.component.WysiwygTextArea;
 import com.bervan.common.config.BervanViewConfig;
 import com.bervan.common.config.ClassViewAutoConfigColumn;
