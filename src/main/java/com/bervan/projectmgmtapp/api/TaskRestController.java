@@ -17,21 +17,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/project-management/tasks")
 public class TaskRestController extends BaseOwnedController {
 
-    private final TaskService taskService;
     private final TaskRelationRepository taskRelationRepository;
 
     protected TaskRestController(TaskService taskService, BervanDTOMapper mapper,
-                                  EntityConfigValidator validator,
-                                  TaskRelationRepository taskRelationRepository) {
+                                 EntityConfigValidator validator,
+                                 TaskRelationRepository taskRelationRepository) {
         super(taskService, mapper, validator, "Task");
-        this.taskService = taskService;
         this.taskRelationRepository = taskRelationRepository;
     }
 
@@ -58,9 +59,8 @@ public class TaskRestController extends BaseOwnedController {
         if (AuthService.getLoggedUserId() == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        Optional<Task> taskOpt = taskService.loadById(id);
-        if (taskOpt.isEmpty()) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(toTaskDetailDto(taskOpt.get()));
+
+        return super.getById(id, TaskDetailDto.class);
     }
 
     @GetMapping("/search")
@@ -71,11 +71,11 @@ public class TaskRestController extends BaseOwnedController {
         if (AuthService.getLoggedUserId() == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        List<Task> tasks = taskService.searchByProject(projectId, q);
-        List<TaskSearchResultDto> results = tasks.stream()
-                .map(t -> new TaskSearchResultDto(t.getId(), t.getNumber(), t.getName(), t.getStatus(), t.getType()))
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(results);
+        SearchRequest searchRequest = new SearchRequest();
+        if (projectId != null) {
+            searchRequest.addCriterion("PROJECT", Task.class, "project.id", SearchOperation.EQUALS_OPERATION, projectId);
+        }
+        return super.load(searchRequest, 0, 10000, TaskSearchResultDto.class);
     }
 
     @PostMapping
@@ -86,13 +86,8 @@ public class TaskRestController extends BaseOwnedController {
         if (req.getProjectId() == null) {
             return ResponseEntity.badRequest().build();
         }
-        Task model = (Task) mapper.map(req);
-        List<EntityConfigValidator.FieldError> errors = validator.validateCreate("Task", model);
-        if (!errors.isEmpty()) {
-            return ResponseEntity.badRequest().body(errors);
-        }
-        Task saved = taskService.save(model);
-        return ResponseEntity.ok(mapper.map(saved, TaskDto.class));
+
+        return super.create(req);
     }
 
     @PutMapping("/{id}")
@@ -100,24 +95,8 @@ public class TaskRestController extends BaseOwnedController {
         if (AuthService.getLoggedUserId() == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        Optional<Task> existing = taskService.loadById(id);
-        if (existing.isEmpty()) return ResponseEntity.notFound().build();
 
-        Task t = existing.get();
-        if (req.getName() != null) t.setName(req.getName());
-        if (req.getStatus() != null) t.setStatus(req.getStatus());
-        if (req.getType() != null) t.setType(req.getType());
-        if (req.getPriority() != null) t.setPriority(req.getPriority());
-        t.setDescription(req.getDescription());
-        t.setDueDate(req.getDueDate());
-        t.setAssignee(req.getAssignee());
-        t.setEstimatedHours(req.getEstimatedHours());
-        if (req.getCompletionPercentage() != null) t.setCompletionPercentage(req.getCompletionPercentage());
-        t.setTags(req.getTags());
-        t.setModificationDate(LocalDateTime.now());
-
-        Task saved = taskService.save(t);
-        return ResponseEntity.ok(mapper.map(saved, TaskDto.class));
+        return super.update(req);
     }
 
     @DeleteMapping("/{id}")
@@ -136,8 +115,8 @@ public class TaskRestController extends BaseOwnedController {
         if (AuthService.getLoggedUserId() == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        Optional<Task> parentOpt = taskService.loadById(req.parentTaskId());
-        Optional<Task> childOpt = taskService.loadById(req.childTaskId());
+        Optional<Task> parentOpt = service.loadById(req.parentTaskId());
+        Optional<Task> childOpt = service.loadById(req.childTaskId());
         if (parentOpt.isEmpty() || childOpt.isEmpty()) return ResponseEntity.notFound().build();
 
         Task parent = parentOpt.get();
@@ -150,7 +129,7 @@ public class TaskRestController extends BaseOwnedController {
         relation.setType(TaskRelationshipType.valueOf(req.type()));
 
         parent.getParentRelationships().add(relation);
-        taskService.save(parent);
+        service.save(parent);
 
         boolean isParent = parent.getId().equals(id);
         Task related = isParent ? child : parent;
