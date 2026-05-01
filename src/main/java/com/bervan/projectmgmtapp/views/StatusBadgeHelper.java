@@ -2,6 +2,7 @@ package com.bervan.projectmgmtapp.views;
 
 import com.vaadin.flow.component.html.Span;
 
+@Deprecated
 public class StatusBadgeHelper {
 
     public static Span createStatusBadge(String status) {

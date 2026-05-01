@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @CssImport("./bervan-project-mgmt.css")
+@Deprecated
 public class ProjectTaskListView extends AbstractBervanTableView<UUID, Task> {
     private final Project project;
 

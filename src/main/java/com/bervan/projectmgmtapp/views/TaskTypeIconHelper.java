@@ -5,6 +5,7 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 
 import java.util.Map;
 
+@Deprecated
 public class TaskTypeIconHelper {
 
     private static final Map<String, VaadinIcon> ICON_MAP = Map.of(

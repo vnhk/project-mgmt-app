@@ -22,6 +22,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Deprecated
 public class TaskRelationsPanel extends VerticalLayout {
 
     private final Task currentTask;

@@ -26,6 +26,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @CssImport("./bervan-project-mgmt.css")
+@Deprecated
 public abstract class AbstractProjectDetailsView extends AbstractPageView implements HasUrlParameter<String> {
     public static final String ROUTE_NAME = AbstractProjectListView.ROUTE_NAME + "/";
     private final ProjectService projectService;

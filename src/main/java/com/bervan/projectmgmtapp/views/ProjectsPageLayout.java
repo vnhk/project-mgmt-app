@@ -3,6 +3,7 @@ package com.bervan.projectmgmtapp.views;
 import com.bervan.common.MenuNavigationComponent;
 import com.vaadin.flow.component.icon.VaadinIcon;
 
+@Deprecated
 public class ProjectsPageLayout extends MenuNavigationComponent {
     public ProjectsPageLayout(String route, String... notVisibleButtons) {
         super(route, notVisibleButtons);

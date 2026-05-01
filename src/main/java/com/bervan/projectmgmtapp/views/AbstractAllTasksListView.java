@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @CssImport("./bervan-project-mgmt.css")
+@Deprecated
 public class AbstractAllTasksListView extends AbstractBervanTableView<UUID, Task> {
     public static final String ROUTE_NAME = "/project-management/all-tasks";
 

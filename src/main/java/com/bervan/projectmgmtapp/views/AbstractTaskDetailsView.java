@@ -24,6 +24,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @CssImport("./bervan-project-mgmt.css")
+@Deprecated
 public abstract class AbstractTaskDetailsView extends AbstractPageView implements HasUrlParameter<String> {
     public static final String ROUTE_NAME = "/project-management/task-details/";
     private final TaskService taskService;

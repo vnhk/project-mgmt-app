@@ -15,6 +15,7 @@ import com.vaadin.flow.data.renderer.ComponentRenderer;
 import java.util.UUID;
 
 @CssImport("./bervan-project-mgmt.css")
+@Deprecated
 public abstract class AbstractProjectListView extends AbstractBervanTableView<UUID, Project> {
     public static final String ROUTE_NAME = "/project-management/projects";
 
