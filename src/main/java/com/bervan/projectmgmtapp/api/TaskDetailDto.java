@@ -13,6 +13,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -41,9 +42,9 @@ public class TaskDetailDto implements BaseDTO<UUID> {
     @FieldMapperConfig(targetFieldNames = "project.name")
     private String projectName;
     @JsonIgnore
-    private List<TaskRelationDto> parentRelationships;
+    private Set<TaskRelationDto> parentRelationships;
     @JsonIgnore
-    private List<TaskRelationDto> childRelationships;
+    private Set<TaskRelationDto> childRelationships;
     private List<TaskRelationDto> relations;
 
     @Override

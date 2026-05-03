@@ -60,9 +60,6 @@ public class TaskRestController extends BaseOwnedController {
         if (AuthService.getLoggedUserId() == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-//        Optional<Task> taskOpt = taskService.loadById(id);
-//        if (taskOpt.isEmpty()) return ResponseEntity.notFound().build();
-//        return ResponseEntity.ok(toTaskDetailDto(taskOpt.get()));
 
         return super.getById(id, TaskDetailDto.class);
     }
