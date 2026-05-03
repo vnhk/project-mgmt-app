@@ -3,6 +3,7 @@ package com.bervan.projectmgmtapp.api;
 import com.bervan.core.model.BaseDTO;
 import com.bervan.core.model.BaseModel;
 import com.bervan.core.model.FieldMapperConfig;
+import com.bervan.core.model.PostCustomMappers;
 import com.bervan.projectmgmtapp.model.Task;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,6 +17,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@PostCustomMappers(mappers = {TaskNumberGenerator.class})
 public final class TaskCreateRequest implements BaseDTO<UUID> {
     private String name;
     private String status;

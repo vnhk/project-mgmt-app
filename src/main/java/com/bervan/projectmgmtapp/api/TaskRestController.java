@@ -86,7 +86,7 @@ public class TaskRestController extends BaseOwnedController {
         if (req.getProjectId() == null) {
             return ResponseEntity.badRequest().build();
         }
-        return super.create(req);
+        return super.create(req, TaskDetailDto.class);
     }
 
     @PatchMapping("/{id}")
@@ -138,9 +138,9 @@ public class TaskRestController extends BaseOwnedController {
         TaskRelationDto dto = new TaskRelationDto(
                 relation.getId(),
                 isParent ? "PARENT" : "CHILD",
-                relation.getType().name(),
+                relation.getType(),
                 isParent ? relation.getType().getDisplayName() : relation.getType().getInverseDisplayName(),
-                related.getId(), related.getNumber(), related.getName(), related.getStatus(), related.getType()
+                related.getId(), related.getNumber(), related.getName(), related.getStatus(), related.getType(), null, null
         );
         return ResponseEntity.ok(dto);
     }
