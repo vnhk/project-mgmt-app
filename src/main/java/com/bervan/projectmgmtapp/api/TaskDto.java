@@ -2,6 +2,7 @@ package com.bervan.projectmgmtapp.api;
 
 import com.bervan.core.model.BaseDTO;
 import com.bervan.core.model.BaseModel;
+import com.bervan.core.model.FieldMapperConfig;
 import com.bervan.projectmgmtapp.model.Task;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,10 +12,6 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-/**
- * Flat DTO for task list and update. projectId/projectNumber are set manually
- * in the controller — DTOMapper does not map renamed fields (project→projectId).
- */
 @Getter
 @Setter
 @AllArgsConstructor
@@ -33,17 +30,19 @@ public final class TaskDto implements BaseDTO<UUID> {
     private Integer completionPercentage;
     private String tags;
     private LocalDateTime modificationDate;
+    @FieldMapperConfig(targetFieldNames = "project.id")
     private UUID projectId;
+    @FieldMapperConfig(targetFieldNames = "project.number")
     private String projectNumber;
-
-    @Override
-    public void setId(UUID uuid) {
-        this.id = uuid;
-    }
 
     @Override
     public UUID getId() {
         return id;
+    }
+
+    @Override
+    public void setId(UUID uuid) {
+        this.id = uuid;
     }
 
     @Override

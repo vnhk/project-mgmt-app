@@ -16,7 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -90,29 +89,16 @@ public class TaskRestController extends BaseOwnedController {
         return super.create(req);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable UUID id, @RequestBody TaskDto req) {
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> patchUpdate(@PathVariable UUID id, @RequestBody TaskDto req) {
         if (AuthService.getLoggedUserId() == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         Optional<Task> existing = taskService.loadById(id);
         if (existing.isEmpty()) return ResponseEntity.notFound().build();
 
-        Task t = existing.get();
-        if (req.getName() != null) t.setName(req.getName());
-        if (req.getStatus() != null) t.setStatus(req.getStatus());
-        if (req.getType() != null) t.setType(req.getType());
-        if (req.getPriority() != null) t.setPriority(req.getPriority());
-        t.setDescription(req.getDescription());
-        t.setDueDate(req.getDueDate());
-        t.setAssignee(req.getAssignee());
-        t.setEstimatedHours(req.getEstimatedHours());
-        if (req.getCompletionPercentage() != null) t.setCompletionPercentage(req.getCompletionPercentage());
-        t.setTags(req.getTags());
-        t.setModificationDate(LocalDateTime.now());
-
-        Task saved = taskService.save(t);
-        return ResponseEntity.ok(mapper.map(saved, TaskDto.class));
+        req.setId(id);
+        return super.patchUpdate(req);
     }
 
     @DeleteMapping("/{id}")
@@ -175,48 +161,4 @@ public class TaskRestController extends BaseOwnedController {
         taskRelationRepository.save(rel);
         return ResponseEntity.noContent().build();
     }
-//
-//    private TaskDetailDto toTaskDetailDto(Task task) {
-//        List<TaskRelationDto> relations = new ArrayList<>();
-//
-//        for (TaskRelation rel : task.getParentRelationships()) {
-//            if (Boolean.TRUE.equals(rel.isDeleted())) continue;
-//            Task child = rel.getChild();
-//            relations.add(new TaskRelationDto(
-//                    rel.getId(), "PARENT",
-//                    rel.getType().name(), rel.getType().getDisplayName(),
-//                    child.getId(), child.getNumber(), child.getName(), child.getStatus(), child.getType()
-//            ));
-//        }
-//
-//        for (TaskRelation rel : task.getChildRelationships()) {
-//            if (Boolean.TRUE.equals(rel.isDeleted())) continue;
-//            Task parent = rel.getParent();
-//            relations.add(new TaskRelationDto(
-//                    rel.getId(), "CHILD",
-//                    rel.getType().name(), rel.getType().getInverseDisplayName(),
-//                    parent.getId(), parent.getNumber(), parent.getName(), parent.getStatus(), parent.getType()
-//            ));
-//        }
-//
-//        TaskDetailDto dto = new TaskDetailDto();
-//        dto.setId(task.getId());
-//        dto.setName(task.getName());
-//        dto.setNumber(task.getNumber());
-//        dto.setStatus(task.getStatus());
-//        dto.setType(task.getType());
-//        dto.setPriority(task.getPriority());
-//        dto.setDescription(task.getDescription());
-//        dto.setDueDate(task.getDueDate());
-//        dto.setAssignee(task.getAssignee());
-//        dto.setEstimatedHours(task.getEstimatedHours());
-//        dto.setCompletionPercentage(task.getCompletionPercentage());
-//        dto.setTags(task.getTags());
-//        dto.setModificationDate(task.getModificationDate());
-//        dto.setProjectId(task.getProject() != null ? task.getProject().getId() : null);
-//        dto.setProjectNumber(task.getProject() != null ? task.getProject().getNumber() : null);
-//        dto.setProjectName(task.getProject() != null ? task.getProject().getName() : null);
-//        dto.setRelations(relations);
-//        return dto;
-//    }
 }
