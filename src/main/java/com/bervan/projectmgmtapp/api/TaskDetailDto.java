@@ -1,8 +1,10 @@
 package com.bervan.projectmgmtapp.api;
 
-import com.bervan.core.model.FieldMapperConfig;
+import com.bervan.core.model.BaseDTO;
+import com.bervan.core.model.BaseModel;
 import com.bervan.core.model.FieldMapperConfig;
 import com.bervan.core.model.PostCustomMappers;
+import com.bervan.projectmgmtapp.model.Task;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,7 +20,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @PostCustomMappers(mappers = {TaskToDetailsPostMapper.class})
-public class TaskDetailDto {
+public class TaskDetailDto implements BaseDTO<UUID> {
     private UUID id;
     private String name;
     private String number;
@@ -43,4 +45,9 @@ public class TaskDetailDto {
     @JsonIgnore
     private List<TaskRelationDto> childRelationships;
     private List<TaskRelationDto> relations;
+
+    @Override
+    public Class<? extends BaseModel<UUID>> dtoTarget() {
+        return Task.class;
+    }
 }

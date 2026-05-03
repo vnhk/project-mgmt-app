@@ -1,5 +1,8 @@
 package com.bervan.projectmgmtapp.api;
 
+import com.bervan.core.model.BaseDTO;
+import com.bervan.core.model.BaseModel;
+import com.bervan.projectmgmtapp.model.TaskRelation;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +14,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
-public class TaskRelationDto {
+public class TaskRelationDto implements BaseDTO<UUID> {
     private UUID id;
     private String direction;
     private String type;
@@ -119,4 +122,8 @@ public class TaskRelationDto {
                 "relatedTaskType=" + relatedTaskType + ']';
     }
 
+    @Override
+    public Class<? extends BaseModel<UUID>> dtoTarget() {
+        return TaskRelation.class;
+    }
 }
