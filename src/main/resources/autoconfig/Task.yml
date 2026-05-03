@@ -73,6 +73,7 @@ columns:
     inEditForm: true
     inTable: true
     required: false
+    dataType: DATETIME
 
   - field: assignee
     displayName: "Assignee"
