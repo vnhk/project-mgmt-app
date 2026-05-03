@@ -5,6 +5,7 @@ import com.bervan.projectmgmtapp.model.Project;
 import com.bervan.projectmgmtapp.service.ProjectService;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Field;
 import java.util.UUID;
 
 @Service
@@ -17,11 +18,6 @@ public class ToProjectMapper implements DefaultCustomMapper<UUID, Project> {
     }
 
     @Override
-    public Project map(UUID projectId) {
-        return projectService.loadById(projectId).orElse(null);
-    }
-
-    @Override
     public Class<UUID> getFrom() {
         return UUID.class;
     }
@@ -29,5 +25,11 @@ public class ToProjectMapper implements DefaultCustomMapper<UUID, Project> {
     @Override
     public Class<Project> getTo() {
         return Project.class;
+    }
+
+    @Override
+    public Project map(UUID projectId, Field fromField, Field toField) {
+        return projectService.loadById(projectId).orElse(null);
+
     }
 }

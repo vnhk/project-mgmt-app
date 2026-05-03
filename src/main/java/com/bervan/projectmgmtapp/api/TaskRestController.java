@@ -17,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -27,12 +26,14 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/project-management/tasks")
 public class TaskRestController extends BaseOwnedController {
 
+    private final TaskService taskService;
     private final TaskRelationRepository taskRelationRepository;
 
     protected TaskRestController(TaskService taskService, BervanDTOMapper mapper,
                                  EntityConfigValidator validator,
                                  TaskRelationRepository taskRelationRepository) {
         super(taskService, mapper, validator, "Task");
+        this.taskService = taskService;
         this.taskRelationRepository = taskRelationRepository;
     }
 
@@ -59,6 +60,9 @@ public class TaskRestController extends BaseOwnedController {
         if (AuthService.getLoggedUserId() == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
+//        Optional<Task> taskOpt = taskService.loadById(id);
+//        if (taskOpt.isEmpty()) return ResponseEntity.notFound().build();
+//        return ResponseEntity.ok(toTaskDetailDto(taskOpt.get()));
 
         return super.getById(id, TaskDetailDto.class);
     }
@@ -71,11 +75,11 @@ public class TaskRestController extends BaseOwnedController {
         if (AuthService.getLoggedUserId() == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        SearchRequest searchRequest = new SearchRequest();
-        if (projectId != null) {
-            searchRequest.addCriterion("PROJECT", Task.class, "project.id", SearchOperation.EQUALS_OPERATION, projectId);
-        }
-        return super.load(searchRequest, 0, 10000, TaskSearchResultDto.class);
+        List<Task> tasks = taskService.searchByProject(projectId, q);
+        List<TaskSearchResultDto> results = tasks.stream()
+                .map(t -> new TaskSearchResultDto(t.getId(), t.getNumber(), t.getName(), t.getStatus(), t.getType()))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(results);
     }
 
     @PostMapping
@@ -86,7 +90,6 @@ public class TaskRestController extends BaseOwnedController {
         if (req.getProjectId() == null) {
             return ResponseEntity.badRequest().build();
         }
-
         return super.create(req);
     }
 
@@ -95,8 +98,24 @@ public class TaskRestController extends BaseOwnedController {
         if (AuthService.getLoggedUserId() == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
+        Optional<Task> existing = taskService.loadById(id);
+        if (existing.isEmpty()) return ResponseEntity.notFound().build();
 
-        return super.update(req);
+        Task t = existing.get();
+        if (req.getName() != null) t.setName(req.getName());
+        if (req.getStatus() != null) t.setStatus(req.getStatus());
+        if (req.getType() != null) t.setType(req.getType());
+        if (req.getPriority() != null) t.setPriority(req.getPriority());
+        t.setDescription(req.getDescription());
+        t.setDueDate(req.getDueDate());
+        t.setAssignee(req.getAssignee());
+        t.setEstimatedHours(req.getEstimatedHours());
+        if (req.getCompletionPercentage() != null) t.setCompletionPercentage(req.getCompletionPercentage());
+        t.setTags(req.getTags());
+        t.setModificationDate(LocalDateTime.now());
+
+        Task saved = taskService.save(t);
+        return ResponseEntity.ok(mapper.map(saved, TaskDto.class));
     }
 
     @DeleteMapping("/{id}")
@@ -115,8 +134,8 @@ public class TaskRestController extends BaseOwnedController {
         if (AuthService.getLoggedUserId() == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        Optional<Task> parentOpt = service.loadById(req.parentTaskId());
-        Optional<Task> childOpt = service.loadById(req.childTaskId());
+        Optional<Task> parentOpt = taskService.loadById(req.parentTaskId());
+        Optional<Task> childOpt = taskService.loadById(req.childTaskId());
         if (parentOpt.isEmpty() || childOpt.isEmpty()) return ResponseEntity.notFound().build();
 
         Task parent = parentOpt.get();
@@ -129,7 +148,7 @@ public class TaskRestController extends BaseOwnedController {
         relation.setType(TaskRelationshipType.valueOf(req.type()));
 
         parent.getParentRelationships().add(relation);
-        service.save(parent);
+        taskService.save(parent);
 
         boolean isParent = parent.getId().equals(id);
         Task related = isParent ? child : parent;
@@ -159,66 +178,48 @@ public class TaskRestController extends BaseOwnedController {
         taskRelationRepository.save(rel);
         return ResponseEntity.noContent().build();
     }
-
-    private TaskDetailDto toTaskDetailDto(Task task) {
-        List<TaskRelationDto> relations = new ArrayList<>();
-
-        for (TaskRelation rel : task.getParentRelationships()) {
-            if (Boolean.TRUE.equals(rel.isDeleted())) continue;
-            Task child = rel.getChild();
-            relations.add(new TaskRelationDto(
-                    rel.getId(), "PARENT",
-                    rel.getType().name(), rel.getType().getDisplayName(),
-                    child.getId(), child.getNumber(), child.getName(), child.getStatus(), child.getType()
-            ));
-        }
-
-        for (TaskRelation rel : task.getChildRelationships()) {
-            if (Boolean.TRUE.equals(rel.isDeleted())) continue;
-            Task parent = rel.getParent();
-            relations.add(new TaskRelationDto(
-                    rel.getId(), "CHILD",
-                    rel.getType().name(), rel.getType().getInverseDisplayName(),
-                    parent.getId(), parent.getNumber(), parent.getName(), parent.getStatus(), parent.getType()
-            ));
-        }
-
-        return new TaskDetailDto(
-                task.getId(), task.getName(), task.getNumber(),
-                task.getStatus(), task.getType(), task.getPriority(),
-                task.getDescription(), task.getDueDate(),
-                task.getAssignee(), task.getEstimatedHours(),
-                task.getCompletionPercentage(), task.getTags(),
-                task.getModificationDate(),
-                task.getProject() != null ? task.getProject().getId() : null,
-                task.getProject() != null ? task.getProject().getNumber() : null,
-                task.getProject() != null ? task.getProject().getName() : null,
-                relations
-        );
-    }
-
-    public record TaskDetailDto(
-            UUID id, String name, String number,
-            String status, String type, String priority,
-            String description, LocalDateTime dueDate,
-            String assignee, Double estimatedHours,
-            Integer completionPercentage, String tags,
-            LocalDateTime modificationDate,
-            UUID projectId, String projectNumber, String projectName,
-            List<TaskRelationDto> relations
-    ) {
-    }
-
-    public record TaskRelationDto(
-            UUID id, String direction, String type, String displayName,
-            UUID relatedTaskId, String relatedTaskNumber, String relatedTaskName,
-            String relatedTaskStatus, String relatedTaskType
-    ) {
-    }
-
-    public record TaskSearchResultDto(UUID id, String number, String name, String status, String type) {
-    }
-
-    public record AddRelationRequest(UUID parentTaskId, UUID childTaskId, String type) {
-    }
+//
+//    private TaskDetailDto toTaskDetailDto(Task task) {
+//        List<TaskRelationDto> relations = new ArrayList<>();
+//
+//        for (TaskRelation rel : task.getParentRelationships()) {
+//            if (Boolean.TRUE.equals(rel.isDeleted())) continue;
+//            Task child = rel.getChild();
+//            relations.add(new TaskRelationDto(
+//                    rel.getId(), "PARENT",
+//                    rel.getType().name(), rel.getType().getDisplayName(),
+//                    child.getId(), child.getNumber(), child.getName(), child.getStatus(), child.getType()
+//            ));
+//        }
+//
+//        for (TaskRelation rel : task.getChildRelationships()) {
+//            if (Boolean.TRUE.equals(rel.isDeleted())) continue;
+//            Task parent = rel.getParent();
+//            relations.add(new TaskRelationDto(
+//                    rel.getId(), "CHILD",
+//                    rel.getType().name(), rel.getType().getInverseDisplayName(),
+//                    parent.getId(), parent.getNumber(), parent.getName(), parent.getStatus(), parent.getType()
+//            ));
+//        }
+//
+//        TaskDetailDto dto = new TaskDetailDto();
+//        dto.setId(task.getId());
+//        dto.setName(task.getName());
+//        dto.setNumber(task.getNumber());
+//        dto.setStatus(task.getStatus());
+//        dto.setType(task.getType());
+//        dto.setPriority(task.getPriority());
+//        dto.setDescription(task.getDescription());
+//        dto.setDueDate(task.getDueDate());
+//        dto.setAssignee(task.getAssignee());
+//        dto.setEstimatedHours(task.getEstimatedHours());
+//        dto.setCompletionPercentage(task.getCompletionPercentage());
+//        dto.setTags(task.getTags());
+//        dto.setModificationDate(task.getModificationDate());
+//        dto.setProjectId(task.getProject() != null ? task.getProject().getId() : null);
+//        dto.setProjectNumber(task.getProject() != null ? task.getProject().getNumber() : null);
+//        dto.setProjectName(task.getProject() != null ? task.getProject().getName() : null);
+//        dto.setRelations(relations);
+//        return dto;
+//    }
 }

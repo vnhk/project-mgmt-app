@@ -2,7 +2,7 @@ package com.bervan.projectmgmtapp.api;
 
 import com.bervan.core.model.BaseDTO;
 import com.bervan.core.model.BaseModel;
-import com.bervan.core.model.FieldCustomMapper;
+import com.bervan.core.model.FieldMapperConfig;
 import com.bervan.projectmgmtapp.model.Task;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,7 +27,7 @@ public final class TaskCreateRequest implements BaseDTO<UUID> {
     private Double estimatedHours;
     private String tags;
 
-    @FieldCustomMapper(mapper = ToProjectMapper.class, targetFieldName = "project")
+    @FieldMapperConfig(mapper = ToProjectMapper.class, targetFieldNames = "project")
     private UUID projectId;
 
     @Override
