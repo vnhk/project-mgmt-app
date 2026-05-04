@@ -14,6 +14,7 @@ public class TaskToDetailsPostMapper implements PostMapper<Task, TaskDetailDto> 
         List<TaskRelationDto> relations = taskDetailDto.getRelations();
         if (relations == null) {
             relations = new ArrayList<>();
+            taskDetailDto.setRelations(relations);
         }
 
         for (TaskRelationDto parentRelationship : taskDetailDto.getParentRelationships()) {
