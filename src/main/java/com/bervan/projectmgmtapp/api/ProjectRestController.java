@@ -3,12 +3,10 @@ package com.bervan.projectmgmtapp.api;
 import com.bervan.common.config.EntityConfigValidator;
 import com.bervan.common.controller.BaseOwnedController;
 import com.bervan.common.mapper.BervanDTOMapper;
-import com.bervan.common.service.AuthService;
 import com.bervan.projectmgmtapp.model.Project;
 import com.bervan.projectmgmtapp.model.Task;
 import com.bervan.projectmgmtapp.service.ProjectService;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,33 +29,21 @@ public class ProjectRestController extends BaseOwnedController {
             @RequestParam(defaultValue = "name") String sort,
             @RequestParam(defaultValue = "asc") String direction
     ) {
-        if (AuthService.getLoggedUserId() == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
         return super.load(page, size, ProjectDto.class);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ProjectDto> getById(@PathVariable UUID id) {
-        if (AuthService.getLoggedUserId() == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
         return super.getById(id, ProjectDto.class);
     }
 
     @PostMapping
     public ResponseEntity<?> create(@RequestBody ProjectDto req) {
-        if (AuthService.getLoggedUserId() == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
         return super.create(req);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable UUID id, @RequestBody ProjectDto req) {
-        if (AuthService.getLoggedUserId() == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
         Optional<Project> existing = service.loadById(id);
         if (existing.isEmpty()) return ResponseEntity.notFound().build();
 
@@ -74,17 +60,11 @@ public class ProjectRestController extends BaseOwnedController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
-        if (AuthService.getLoggedUserId() == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
         return super.delete(id);
     }
 
     @GetMapping("/{id}/stats")
     public ResponseEntity<ProjectStatsDto> getStats(@PathVariable UUID id) {
-        if (AuthService.getLoggedUserId() == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
         Optional<Project> projectOpt = service.loadById(id);
         if (projectOpt.isEmpty()) return ResponseEntity.notFound().build();
 
