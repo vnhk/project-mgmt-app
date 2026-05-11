@@ -12,6 +12,7 @@ import com.bervan.projectmgmtapp.repo.TaskRelationRepository;
 import com.bervan.projectmgmtapp.service.TaskService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,17 +37,18 @@ public class TaskRestController extends BaseOwnedController {
 
     @GetMapping
     public ResponseEntity<Page<TaskDto>> list(
+            @RequestParam MultiValueMap<String, String> allParams,
             @RequestParam(required = false) UUID projectId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size,
             @RequestParam(defaultValue = "number") String sort,
-            @RequestParam(defaultValue = "asc") String direction
-    ) {
-        SearchRequest searchRequest = new SearchRequest();
+            @RequestParam(defaultValue = "asc") String direction) {
+        SearchRequest baseRequest = new SearchRequest();
         if (projectId != null) {
-            searchRequest.addCriterion("PROJECT", Task.class, "project.id", SearchOperation.EQUALS_OPERATION, projectId);
+            baseRequest.addCriterion("PROJECT", com.bervan.projectmgmtapp.model.Task.class,
+                    "project.id", SearchOperation.EQUALS_OPERATION, projectId);
         }
-        return super.load(searchRequest, page, size, TaskDto.class);
+        return super.search(baseRequest, allParams, page, size, TaskDto.class, com.bervan.projectmgmtapp.model.Task.class);
     }
 
     @GetMapping("/{id}")

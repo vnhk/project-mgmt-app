@@ -8,6 +8,7 @@ import com.bervan.projectmgmtapp.model.Task;
 import com.bervan.projectmgmtapp.service.ProjectService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -24,12 +25,12 @@ public class ProjectRestController extends BaseOwnedController {
 
     @GetMapping
     public ResponseEntity<Page<ProjectDto>> list(
+            @RequestParam MultiValueMap<String, String> allParams,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size,
             @RequestParam(defaultValue = "name") String sort,
-            @RequestParam(defaultValue = "asc") String direction
-    ) {
-        return super.load(page, size, ProjectDto.class);
+            @RequestParam(defaultValue = "asc") String direction) {
+        return super.search(allParams, page, size, ProjectDto.class, com.bervan.projectmgmtapp.model.Project.class);
     }
 
     @GetMapping("/{id}")
