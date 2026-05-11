@@ -70,7 +70,7 @@ Each value has `displayName` (parent perspective) and `inverseDisplayName` (chil
 - `Consumer<Object> onSave` callback
 
 ### TaskTypeIconHelper
-- Maps type string → VaadinIcon + color
+- Maps type string → icon + color
 - Task → CHECK_SQUARE_O (info), Bug → BUG (danger), Story → BOOK (success), Feature → LIGHTBULB (accent), Objective → BULLSEYE (warning)
 - `createIcon()` and `createLargeIcon()` methods
 
@@ -88,7 +88,7 @@ Each value has `displayName` (parent perspective) and `inverseDisplayName` (chil
 5. **Cascade persistence**: Relations are persisted by adding to parent task's collection and saving the task - no direct repository
 
 ## CSS (bervan-project-mgmt.css)
-Located in `common-vaadin/.../frontend/bervan-project-mgmt.css`. Key classes:
+Located in `common/.../frontend/bervan-project-mgmt.css`. Key classes:
 - `.pm-section` - Section panel (full width, box-sizing, padding, border-radius)
 - `.inline-editable-field` - Click-to-edit styling with hover pencil
 - `.task-badge.status-*` / `.priority-*` - Colored pill badges
