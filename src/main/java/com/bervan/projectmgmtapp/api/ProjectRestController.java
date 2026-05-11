@@ -96,8 +96,8 @@ public class ProjectRestController extends BaseOwnedController {
     }
 
     @GetMapping("/export")
-    public ResponseEntity<byte[]> export() {
-        return super.exportAll(ProjectDto.class, "projects");
+    public ResponseEntity<byte[]> export(@RequestParam MultiValueMap<String, String> allParams) {
+        return super.exportAll(allParams, ProjectDto.class, "projects", Project.class);
     }
 
     @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
