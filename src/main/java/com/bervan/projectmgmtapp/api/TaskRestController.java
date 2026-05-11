@@ -2,6 +2,7 @@ package com.bervan.projectmgmtapp.api;
 
 import com.bervan.common.config.EntityConfigValidator;
 import com.bervan.common.controller.BaseOwnedController;
+import com.bervan.common.controller.BaseOwnedController.ImportResult;
 import com.bervan.common.mapper.BervanDTOMapper;
 import com.bervan.common.search.SearchRequest;
 import com.bervan.common.search.model.SearchOperation;
@@ -11,9 +12,11 @@ import com.bervan.projectmgmtapp.model.TaskRelationshipType;
 import com.bervan.projectmgmtapp.repo.TaskRelationRepository;
 import com.bervan.projectmgmtapp.service.TaskService;
 import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -136,5 +139,15 @@ public class TaskRestController extends BaseOwnedController {
         rel.setDeleted(true);
         taskRelationRepository.save(rel);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/export")
+    public ResponseEntity<byte[]> export() {
+        return super.exportAll(TaskDto.class, "tasks");
+    }
+
+    @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ImportResult> importData(@RequestParam("file") MultipartFile file) {
+        return super.importAll(file, TaskDto.class);
     }
 }

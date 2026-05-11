@@ -2,14 +2,17 @@ package com.bervan.projectmgmtapp.api;
 
 import com.bervan.common.config.EntityConfigValidator;
 import com.bervan.common.controller.BaseOwnedController;
+import com.bervan.common.controller.BaseOwnedController.ImportResult;
 import com.bervan.common.mapper.BervanDTOMapper;
 import com.bervan.projectmgmtapp.model.Project;
 import com.bervan.projectmgmtapp.model.Task;
 import com.bervan.projectmgmtapp.service.ProjectService;
 import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -90,5 +93,15 @@ public class ProjectRestController extends BaseOwnedController {
     }
 
     public record ProjectStatsDto(int total, int open, int inProgress, int done, int overdue) {
+    }
+
+    @GetMapping("/export")
+    public ResponseEntity<byte[]> export() {
+        return super.exportAll(ProjectDto.class, "projects");
+    }
+
+    @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ImportResult> importData(@RequestParam("file") MultipartFile file) {
+        return super.importAll(file, ProjectDto.class);
     }
 }
