@@ -9,7 +9,6 @@ import com.bervan.ieentities.ExcelIEEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import org.checkerframework.common.aliasing.qual.Unique;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -30,7 +29,7 @@ public class Project extends BervanOwnedBaseEntity<UUID> implements PersistableT
     private UUID id;
     @Size(min = 4, max = 200)
     private String name;
-    @Unique
+    @Column(unique = true)
     @Size(min = 2, max = 20)
     private String number;
     private boolean deleted;

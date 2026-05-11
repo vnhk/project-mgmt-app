@@ -8,7 +8,6 @@ import com.bervan.common.service.BaseService;
 import com.bervan.projectmgmtapp.model.Task;
 import com.bervan.projectmgmtapp.repo.TaskHistoryRepository;
 import com.bervan.projectmgmtapp.repo.TaskRepository;
-import com.google.common.base.Strings;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +27,7 @@ public class TaskService extends BaseService<UUID, Task> {
 
     @Override
     public Task save(Task data) {
-        if (Strings.isNullOrEmpty(data.getNumber())) {
+        if (data.getNumber() == null || data.getNumber().trim().isEmpty()) {
             data.setNumber(generateTaskNumber(data));
         }
         return super.save(data);
